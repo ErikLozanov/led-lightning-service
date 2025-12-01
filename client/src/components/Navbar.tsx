@@ -6,7 +6,9 @@ import { Menu, X, Phone, ChevronRight } from 'lucide-react';
 const NAV_LINKS = [
   { name: 'Начало',    path: '/',          type: 'scroll', id: 'top' },
   { name: 'Услуги',    path: '/#services', type: 'scroll', id: 'services' },
+  { name: 'За Нас',    path: '/#about',    type: 'scroll', id: 'about' },
   { name: 'Галерия',   path: '/gallery',   type: 'route' },
+  { name: 'Отзиви',    path: '/reviews', type: 'route' },
   { name: 'Контакти',  path: '/#contact',  type: 'scroll', id: 'contact' },
 ];
 
@@ -16,7 +18,7 @@ const Navbar = () => {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
 
-  const handleLinkClick = (e: React.MouseEvent, link: typeof NAV_LINKS[0]) => {
+const handleLinkClick = (e: React.MouseEvent, link: typeof NAV_LINKS[0]) => {
     if (link.type === 'route') {
       setIsOpen(false);
       return; 
@@ -25,25 +27,24 @@ const Navbar = () => {
     e.preventDefault();
     setIsOpen(false);
 
-    const performScroll = () => {
-      if (link.id === 'top') {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      } else if (link.id) {
-        const element = document.getElementById(link.id);
-        if (element) {
-          const headerOffset = 80;
-          const elementPosition = element.getBoundingClientRect().top;
-          const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-          window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+    if (link.id === 'top') {
+        if (location.pathname === '/') {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        } else {
+            navigate('/'); 
         }
-      }
-    };
+        return;
+    }
 
-    if (location.pathname === '/') {
-      performScroll();
+    const targetElement = document.getElementById(link.id ?? '');
+
+    if (targetElement) {
+      const headerOffset = 80;
+      const elementPosition = targetElement.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+      window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
     } else {
-      navigate('/');
-      setTimeout(performScroll, 100);
+      navigate('/', { state: { scrollTo: link.id } });
     }
   };
 

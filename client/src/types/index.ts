@@ -9,3 +9,10 @@ export interface Project {
   slug: string;
   created_at?: string;
 }
+
+export interface Testimonial {
+  id: number;
+  client_name?: string;
+  car_model?: string;
+  review_image_url: string;
+}

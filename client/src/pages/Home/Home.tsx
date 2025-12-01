@@ -1,5 +1,5 @@
 // Imports
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 // import BeforeAfterSlider from '../../components/BeforeAfterSlider';
 import ServicesSection from "../../components/ServicesSection";
 import ContactSection from "../../components/ContactSection";
@@ -14,9 +14,30 @@ import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
+import { useEffect, useRef } from "react";
+import TestimonialsSection from "../../components/TestimonialsSection";
+import AboutSection from "../../components/AboutSection";
 
 const Home = () => {
     const { projects, loading } = useGallery();
+    const location = useLocation()
+    useEffect(() => {
+    if (location.state && location.state.scrollTo) {
+      const targetId = location.state.scrollTo;
+      
+      setTimeout(() => {
+        const element = document.getElementById(targetId);
+        if (element) {
+          const headerOffset = 80;
+          const elementPosition = element.getBoundingClientRect().top;
+          const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+          window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+        }
+      }, 300); 
+      
+      window.history.replaceState({}, document.title);
+    }
+  }, [location]);
 
     const scrollToContact = () => {
         const contactSection = document.getElementById("contact");
@@ -127,6 +148,9 @@ const Home = () => {
             {/* SERVICES */}
             <ServicesSection />
 
+            {/* ABOUT SECTION */}
+            <AboutSection />
+
             {/* --- CAROUSEL SECTION (SWIPER JS) --- */}
             <div className="py-24 bg-gradient-to-b from-slate-900 to-black overflow-hidden relative">
                 <div className="max-w-7xl mx-auto px-6">
@@ -147,25 +171,26 @@ const Home = () => {
                     {!loading && projects.length > 0 && (
                         <Swiper
                             modules={[Navigation, Pagination, Autoplay]}
-                            spaceBetween={30} // Gap between slides in px
-                            slidesPerView={1} // Default (Mobile)
-                            navigation // Enables Arrows
-                            pagination={{ clickable: true }} // Enables Dots
+                            spaceBetween={30} 
+                            slidesPerView={1} 
+                            navigation 
+                            centerInsufficientSlides={true}
+                            pagination={{ clickable: true }} 
                             autoplay={{
                                 delay: 5000,
                                 disableOnInteraction: false,
                                 pauseOnMouseEnter: true,
                             }}
                             breakpoints={{
-                                640: { slidesPerView: 1 }, // Mobile
-                                768: { slidesPerView: 2 }, // Tablet
-                                1024: { slidesPerView: 3 }, // Desktop
+                                640: { slidesPerView: 1 }, 
+                                768: { slidesPerView: 2 }, 
+                                1024: { slidesPerView: 3 }, 
                             }}
-                            className="pb-12" // Padding bottom for dots space
+                            className="pb-12" 
                         >
                             {projects.slice(0, 6).map((post) => (
                                 <SwiperSlide key={post.id} className="h-auto">
-                                    {/* 'h-auto' ensures all cards stretch to same height */}
+                                    
                                     <div className="h-full py-2">
                                         <ProjectCard project={post} />
                                     </div>
@@ -185,7 +210,9 @@ const Home = () => {
                     </div>
                 </div>
             </div>
-
+            {/* TESTIMONIALS SECTION */}
+            <TestimonialsSection />
+            {/* CONTACT SECTION */}
             <ContactSection />
         </div>
     );

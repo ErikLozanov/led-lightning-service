@@ -118,6 +118,7 @@ const ProjectDetails = () => {
               spaceBetween={20}
               slidesPerView={1}
               navigation
+              centerInsufficientSlides={true}
               pagination={{ clickable: true }}
               breakpoints={{
                 640: { slidesPerView: 2 },
