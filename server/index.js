@@ -1,7 +1,9 @@
 const express = require('express');
 const cors = require('cors');
-const { createClient } = require('@supabase/supabase-js');
 require('dotenv').config();
+
+// Import the central router
+const apiRoutes = require('./routes');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -10,28 +12,12 @@ const PORT = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
-// 1. Connect to Supabase
-const supabaseUrl = process.env.SUPABASE_URL;
-const supabaseKey = process.env.SUPABASE_KEY;
-const supabase = createClient(supabaseUrl, supabaseKey);
+// Routes
+app.use('/api', apiRoutes);
 
-// 2. Test Route (To check if server is working)
+// Health Check
 app.get('/', (req, res) => {
   res.json({ message: 'LED Lightning Service Backend is running!' });
-});
-
-// 3. Get All Gallery Posts Route
-app.get('/api/gallery', async (req, res) => {
-  const { data, error } = await supabase
-    .from('gallery_posts')
-    .select('*')
-    .order('created_at', { ascending: false });
-
-  if (error) {
-    return res.status(400).json({ error: error.message });
-  }
-  
-  res.json(data);
 });
 
 // Start Server

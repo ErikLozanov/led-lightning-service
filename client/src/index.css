@@ -1,11 +1,6 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
-/* We set the background to dark immediately to match your "cool/modern" vibe */
 body {
-  background-color: #0f172a; /* This is Slate-900 (Dark Blue/Gray) */
+  background-color: #0f172a;
   color: white;
-  margin: 0;
-  font-family: 'Inter', sans-serif; /* Standard clean font */
 }
