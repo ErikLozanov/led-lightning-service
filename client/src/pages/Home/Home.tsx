@@ -1,4 +1,5 @@
 import BeforeAfterSlider from '../../components/BeforeAfterSlider';
+import ServicesSection from '../../components/ServicesSection'; // <--- Import it
 import { useGallery } from '../../hooks/useGallery';
 
 const Home = () => {
@@ -7,8 +8,9 @@ const Home = () => {
   return (
     <div className="min-h-screen bg-slate-900 text-white font-sans selection:bg-neon-blue selection:text-black">
       
-      {/* Hero Section */}
-      <div className="flex flex-col items-center justify-center text-center p-10 min-h-[60vh] bg-gradient-to-b from-slate-900 to-black relative overflow-hidden">
+      {/* 1. Hero Section */}
+      <div className="flex flex-col items-center justify-center text-center p-10 min-h-[85vh] bg-gradient-to-b from-slate-900 to-black relative overflow-hidden">
+        {/* ... (Keep your existing Hero code here) ... */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-neon-blue/20 rounded-full blur-[100px] pointer-events-none"></div>
 
         <h1 className="relative z-10 text-5xl md:text-7xl font-bold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400 drop-shadow-[0_0_15px_rgba(0,243,255,0.3)]">
@@ -26,13 +28,18 @@ const Home = () => {
         </div>
       </div>
 
-      {/* Gallery Section */}
-      <div className="p-8 max-w-7xl mx-auto">
-        <div className="flex items-center mb-12">
-          <div className="h-10 w-2 bg-neon-blue mr-4 shadow-[0_0_10px_#00f3ff]"></div>
-          <h2 className="text-3xl font-bold tracking-wider">НАШИТЕ ПРОЕКТИ</h2>
+      {/* 2. INSERT SERVICES SECTION HERE */}
+      <ServicesSection />
+
+      {/* 3. Gallery Section */}
+      <div className="p-8 max-w-7xl mx-auto py-20"> {/* Added py-20 for spacing */}
+        <div className="flex items-center mb-12 justify-center"> {/* Centered title */}
+          <h2 className="text-3xl font-bold tracking-wider text-center">
+            <span className="text-neon-blue">РЕАЛНИ</span> РЕЗУЛТАТИ
+          </h2>
         </div>
         
+        {/* ... (Keep existing gallery logic: error, loading, grid) ... */}
         {error && (
           <div className="text-red-400 bg-red-900/20 p-4 rounded border border-red-500/50 text-center">
             Неуспешно зареждане на галерията.
@@ -65,7 +72,8 @@ const Home = () => {
         </div>
       </div>
 
-      <footer className="bg-black py-8 text-center text-gray-600 text-sm mt-20 border-t border-slate-800">
+      {/* Footer */}
+      <footer className="bg-black py-8 text-center text-gray-600 text-sm border-t border-slate-800">
         <p>&copy; 2025 LED Lightning Service. Всички права запазени.</p>
       </footer>
     </div>
