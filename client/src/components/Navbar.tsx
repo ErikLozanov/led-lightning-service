@@ -59,9 +59,7 @@ const handleLinkClick = (e: React.MouseEvent, link: typeof NAV_LINKS[0]) => {
             onClick={(e) => handleLinkClick(e, NAV_LINKS[0])}
             className="text-2xl font-black text-white tracking-wider hover:text-[#00f3ff] transition-colors flex items-center gap-2 z-50 relative group"
           >
-            <span className="group-hover:drop-shadow-[0_0_15px_rgba(0,243,255,0.8)] transition-all duration-300">
-              LED <span className="text-[#00f3ff]">LIGHTNING</span>
-            </span>
+          VPRIME <span className="text-[#00f3ff] drop-shadow-[0_0_5px_rgba(0,243,255,0.8)]">LIGHTS</span>
           </a>
 
           {/* DESKTOP MENU */}

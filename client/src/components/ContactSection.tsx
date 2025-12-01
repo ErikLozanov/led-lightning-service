@@ -12,7 +12,7 @@ const ContactSection = () => {
         {/* Column 1: Brand & Intro */}
         <div>
           <h2 className="text-2xl font-bold text-white mb-6">
-            LED <span className="text-neon-blue">LIGHTNING</span>
+            VPRIME <span className="text-[#00f3ff]">LIGHTS</span>
           </h2>
           <p className="text-gray-400 text-sm leading-relaxed mb-6">
             Професионално отношение към детайла. Ние връщаме блясъка на вашия автомобил и гарантираме безопасността ви на пътя.
@@ -102,7 +102,7 @@ const ContactSection = () => {
       </div>
 
       <div className="max-w-7xl mx-auto px-6 mt-16 pt-8 border-t border-slate-800 text-center text-gray-600 text-xs">
-        <p>&copy; 2025 LED Lightning Service. Всички права запазени.</p>
+        <p>© 2025 VPrime Lights. Всички права запазени.</p>
       </div>
     </footer>
   );

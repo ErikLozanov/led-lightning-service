@@ -104,7 +104,7 @@ const Home = () => {
 
                 <div className="relative z-20 flex flex-col items-center max-w-4xl mx-auto mt-16">
                     <h1 className="text-5xl md:text-8xl font-black mb-6 tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-200 to-gray-500 drop-shadow-[0_0_25px_rgba(0,243,255,0.2)]">
-                        LED LIGHTNING
+                        VPRIME LIGHTS
                     </h1>
                     <p className="text-xl md:text-2xl text-gray-300 max-w-2xl mb-10 font-light leading-relaxed">
                         Професионално реставриране и полиране на фарове. <br />

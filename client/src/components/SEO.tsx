@@ -9,12 +9,12 @@ interface SEOProps {
 
 const SEO = ({ 
   title, 
-  description = "Професионално реставриране, полиране и тунинг на автомобилни фарове. Вижте пътя ясно отново с LED Lightning Service.", 
+  description = "Професионално реставриране и тунинг на фарове. Вижте пътя ясно отново с VPrime Lights.",
   image = "/hero-mobile.mp4", 
   type = "website" 
 }: SEOProps) => {
   
-  const siteTitle = "LED Lightning Service";
+  const siteTitle = "VPrime Lights";
   const fullTitle = `${title} | ${siteTitle}`;
 
   return (
