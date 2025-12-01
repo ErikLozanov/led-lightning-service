@@ -41,7 +41,7 @@ const services = [
 
 const ServicesSection = () => {
   return (
-    <section className="py-20 bg-black relative overflow-hidden">
+    <section id="services" className="py-20 bg-black relative overflow-hidden">
       
       {/* Background Glow Effect */}
       <div className="absolute top-0 right-0 w-96 h-96 bg-neon-blue/5 rounded-full blur-[120px] pointer-events-none"></div>

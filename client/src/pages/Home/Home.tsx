@@ -1,121 +1,126 @@
-import { Link } from "react-router-dom";
-import BeforeAfterSlider from "../../components/BeforeAfterSlider";
-import ServicesSection from "../../components/ServicesSection"; // <--- Import it
-import { useGallery } from "../../hooks/useGallery";
+import { Link } from 'react-router-dom';
+import BeforeAfterSlider from '../../components/BeforeAfterSlider';
+import ServicesSection from '../../components/ServicesSection';
+import ContactSection from '../../components/ContactSection';
+import { useGallery } from '../../hooks/useGallery';
 
 const Home = () => {
-    const { projects, loading, error } = useGallery();
+  const { projects, loading, error } = useGallery();
 
-    return (
-        <div className="min-h-screen bg-slate-900 text-white font-sans selection:bg-neon-blue selection:text-black">
-            {/* 1. Hero Section */}
-            <div className="flex flex-col items-center justify-center text-center p-10 min-h-[85vh] bg-gradient-to-b from-slate-900 to-black relative overflow-hidden">
-                {/* ... (Keep your existing Hero code here) ... */}
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-neon-blue/20 rounded-full blur-[100px] pointer-events-none"></div>
+  // Smart Scroll Helper
+  const scrollToSection = (id: string) => {
+    const element = document.getElementById(id);
+    if (element) {
+      const headerOffset = 80; 
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
 
-                <h1 className="relative z-10 text-5xl md:text-7xl font-bold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400 drop-shadow-[0_0_15px_rgba(0,243,255,0.3)]">
-                    LED LIGHTNING SERVICE
-                </h1>
-                <p className="relative z-10 text-xl text-gray-400 max-w-2xl mb-8">
-                    Професионално реставриране и полиране на фарове. <br />
-                    <span className="text-neon-blue">
-                        Виж пътя ясно отново.
-                    </span>
-                </p>
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth"
+      });
+    }
+  };
 
-                <div className="flex gap-4 relative z-10">
-                    <button className="px-8 py-3 bg-neon-blue text-black font-bold text-lg rounded-sm hover:bg-white hover:shadow-[0_0_25px_rgba(255,255,255,0.6)] transition-all duration-300">
-                        Запиши Час
-                    </button>
-                </div>
-            </div>
+  return (
+    <div className="min-h-screen bg-slate-900 text-white font-sans selection:bg-neon-blue selection:text-black">
+      
+      {/* --- HERO SECTION --- */}
+      <div className="relative min-h-screen flex flex-col items-center justify-center text-center p-6 overflow-hidden">
+        
+        {/* Desktop Video */}
+        <video autoPlay loop muted playsInline className="hidden md:block absolute top-0 left-0 w-full h-full object-cover z-0">
+          <source src="/hero.mp4" type="video/mp4" />
+        </video>
 
-            {/* 2. INSERT SERVICES SECTION HERE */}
-            <ServicesSection />
+        {/* Mobile Video */}
+        <video autoPlay loop muted playsInline className="block md:hidden absolute top-0 left-0 w-full h-full object-cover z-0">
+          <source src="/hero-mobile.mp4" type="video/mp4" />
+        </video>
 
-            {/* 3. Gallery Section */}
-            <div className="p-8 max-w-7xl mx-auto py-20">
-                {" "}
-                {/* Added py-20 for spacing */}
-                <div className="flex items-center mb-12 justify-center">
-                    {" "}
-                    {/* Centered title */}
-                    <h2 className="text-3xl font-bold tracking-wider text-center">
-                        <span className="text-neon-blue">РЕАЛНИ</span> РЕЗУЛТАТИ
-                    </h2>
-                </div>
-                {/* ... (Keep existing gallery logic: error, loading, grid) ... */}
-                {error && (
-                    <div className="text-red-400 bg-red-900/20 p-4 rounded border border-red-500/50 text-center">
-                        Неуспешно зареждане на галерията.
-                    </div>
-                )}
-                {loading && (
-                    <p className="text-center text-gray-500 animate-pulse">
-                        Зареждане на проекти...
-                    </p>
-                )}
-                {projects.length === 0 && !loading && !error && (
-                    <p className="text-center text-gray-500">
-                        Все още няма добавени проекти.
-                    </p>
-                )}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-                    {projects.map((post) => (
-                        <div
-                            key={post.id}
-                            className="bg-slate-800/50 rounded-xl overflow-hidden border border-slate-700 hover:border-neon-blue/50 transition-all duration-300 shadow-xl backdrop-blur-sm group"
-                        >
-                            <Link
-                                to={`/project/${post.id}`}
-                                className="block relative"
-                            >
-                                {/* Technically, putting the Slider inside a Link might interfere with dragging.
-          Better approach: Put a "View Details" overlay or just link the text/button below.
-          Let's try overlaying a transparent link area ONLY if you want the whole thing clickable, 
-          but for dragging to work, we usually keep the slider interactive and link the title.
-       */}
+        <div className="absolute inset-0 bg-black/70 z-10"></div>
+        
+        <div className="relative z-20 flex flex-col items-center max-w-4xl mx-auto mt-16">
+          <h1 className="text-5xl md:text-8xl font-black mb-6 tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-200 to-gray-500 drop-shadow-[0_0_25px_rgba(0,243,255,0.2)]">
+            LED LIGHTNING
+          </h1>
+          
+          <p className="text-xl md:text-2xl text-gray-300 max-w-2xl mb-10 font-light leading-relaxed">
+            Професионално реставриране и полиране на фарове. <br />
+            <span className="text-white font-bold border-b-2 border-neon-blue pb-1">Виж пътя ясно отново.</span>
+          </p>
+          
+          <div className="flex flex-col sm:flex-row gap-6">
+            {/* Contact Button */}
+            <button 
+              onClick={() => scrollToSection('contact')}
+              className="px-8 py-4 bg-neon-blue text-black font-extrabold text-lg rounded hover:bg-white hover:scale-105 transition-all duration-300 shadow-[0_0_20px_rgba(0,243,255,0.6)] uppercase tracking-wide"
+            >
+              Запиши Час
+            </button>
 
-                                <div className="pointer-events-none">
-                                    {/* pointer-events-none disables dragging on the preview! 
-             Use this IF you want the home page just to be a preview link. 
-             If you want them to drag on home page, DO NOT wrap in Link.
-         */}
-                                    <BeforeAfterSlider
-                                        beforeImage={post.before_image_url}
-                                        afterImage={post.after_image_url}
-                                    />
-                                </div>
-
-                                {/* Overlay that says "Click to View" on hover */}
-                                <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity z-30">
-                                    <span className="text-white font-bold border border-white px-4 py-2 rounded-full">
-                                        Виж Детайли
-                                    </span>
-                                </div>
-                            </Link>
-
-                            <div className="p-6">
-                                <Link to={`/project/${post.id}`}>
-                                    <h3 className="text-2xl font-bold text-white mb-2 hover:text-neon-blue transition-colors">
-                                        {post.car_model}
-                                    </h3>
-                                </Link>
-                                <p className="text-gray-400 text-sm leading-relaxed line-clamp-2">
-                                    {post.description}
-                                </p>
-                            </div>
-                        </div>
-                    ))}
-                </div>
-            </div>
-
-            {/* Footer */}
-            <footer className="bg-black py-8 text-center text-gray-600 text-sm border-t border-slate-800">
-                <p>&copy; 2025 LED Lightning Service. Всички права запазени.</p>
-            </footer>
+            {/* Services Button - Now uses smooth scroll */}
+            <button 
+              onClick={() => scrollToSection('services')}
+              className="px-8 py-4 border border-white/30 text-white font-bold text-lg rounded hover:bg-white/10 hover:border-white transition-all duration-300 backdrop-blur-sm uppercase tracking-wide"
+            >
+              Виж Услуги
+            </button>
+          </div>
         </div>
-    );
+
+        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-20 animate-bounce text-gray-400">
+           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" /></svg>
+        </div>
+      </div>
+
+      {/* --- SERVICES --- */}
+      <ServicesSection />
+
+      {/* --- GALLERY --- */}
+      <div className="p-8 max-w-7xl mx-auto py-24">
+        <div className="flex flex-col items-center mb-16">
+          <h2 className="text-4xl font-bold tracking-wider text-center mb-4">
+            <span className="text-neon-blue">РЕАЛНИ</span> РЕЗУЛТАТИ
+          </h2>
+          <div className="h-1 w-24 bg-neon-blue shadow-[0_0_15px_#00f3ff]"></div>
+        </div>
+        
+        {error && <div className="text-red-400 bg-red-900/20 p-4 rounded text-center">Неуспешно зареждане.</div>}
+        {loading && <p className="text-center text-gray-500 animate-pulse">Зареждане...</p>}
+        {projects.length === 0 && !loading && !error && <p className="text-center text-gray-500">Няма добавени проекти.</p>}
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+          {projects.map((post) => (
+            <div key={post.id} className="bg-slate-900 rounded-2xl overflow-hidden border border-slate-800 hover:border-neon-blue/50 transition-all duration-300 shadow-2xl hover:shadow-[0_0_30px_rgba(0,243,255,0.1)] group">
+              <Link to={`/project/${post.id}`} className="block relative">
+                 <div className="pointer-events-none"> 
+                   <BeforeAfterSlider beforeImage={post.before_image_url} afterImage={post.after_image_url} />
+                 </div>
+                 <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity z-30 duration-300">
+                    <span className="text-white font-bold border-2 border-white px-6 py-2 rounded-full tracking-widest hover:bg-white hover:text-black transition-colors">ВИЖ ДЕТАЙЛИ</span>
+                 </div>
+              </Link>
+              <div className="p-8 relative">
+                <Link to={`/project/${post.id}`}>
+                  <h3 className="text-2xl font-bold text-white mb-3 hover:text-neon-blue transition-colors uppercase">{post.car_model}</h3>
+                </Link>
+                <p className="text-gray-400 text-sm leading-relaxed line-clamp-2 border-l-2 border-neon-blue/30 pl-3">{post.description}</p>
+                {post.production_year && (
+                   <div className="absolute top-8 right-8">
+                      <span className="text-xs font-mono text-neon-blue border border-neon-blue/30 px-2 py-1 rounded bg-neon-blue/5">{post.production_year}</span>
+                   </div>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* --- CONTACT --- */}
+      <ContactSection /> 
+    </div>
+  );
 };
 
 export default Home;
