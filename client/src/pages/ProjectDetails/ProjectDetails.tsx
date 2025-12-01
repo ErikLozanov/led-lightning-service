@@ -7,14 +7,15 @@ import Navbar from '../../components/Navbar';
 import SEO from '../../components/SEO'
 
 const ProjectDetails = () => {
-  const { id } = useParams();
+  const params = useParams();
   const [project, setProject] = useState<Project | null>(null);
+  const slug = params.slug;
   const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
+useEffect(() => {
     const fetchProject = async () => {
       try {
-        const res = await api.get(`/gallery/${id}`);
+        // Now calling /gallery/audi-a6 instead of /gallery/5
+        const res = await api.get(`/gallery/${slug}`);
         setProject(res.data);
       } catch (err) {
         console.error("Error fetching project details:", err);
@@ -22,8 +23,9 @@ const ProjectDetails = () => {
         setLoading(false);
       }
     };
-    fetchProject();
-  }, [id]);
+    
+    if (slug) fetchProject();
+  }, [slug]);
 
   if (loading) return <div className="min-h-screen bg-slate-900 text-white flex items-center justify-center">Зареждане...</div>;
   if (!project) return <div className="min-h-screen bg-slate-900 text-white flex items-center justify-center">Проектът не е намерен.</div>;

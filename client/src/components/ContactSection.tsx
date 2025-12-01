@@ -81,14 +81,14 @@ const ContactSection = () => {
           </ul>
           <div className="mt-6 flex items-start gap-3 text-gray-400 text-sm">
              <MapPin size={20} className="text-neon-blue shrink-0" />
-             <p>гр. София, кв. Люлин 10, <br />бул. "Д-р Петър Дертлиев" 55</p>
+             <p>гр. Перник, Ладовица, <br />ул. Ямбол, 2304</p>
           </div>
         </div>
 
         {/* Column 4: Map (Placeholder) */}
         <div className="bg-slate-800 rounded-xl overflow-hidden h-64 border border-slate-700 relative group">
            <iframe 
-             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d23466.868269784347!2d23.2389!3d42.7161!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40aa91b8a5363361%3A0x6c6e755259929f0!2sLyulin%2C%20Sofia!5e0!3m2!1sen!2sbg!4v1700000000000!5m2!1sen!2sbg" 
+             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d519.1509288471393!2d23.10928255122469!3d42.60281114730217!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14aacd0061364e61%3A0x8dfd87c8b9c4536c!2zMThUaW50IC0g0LfQsNGC0YrQvNC90Y_QstCw0L3QtSDQvdCwINCw0LLRgtC-0YHRgtGK0LrQu9Cw!5e0!3m2!1sbg!2sbg!4v1764602797032!5m2!1sbg!2sbg"
              width="100%" 
              height="100%" 
              style={{ border: 0 }} 

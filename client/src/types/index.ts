@@ -6,5 +6,6 @@ export interface Project {
   after_image_url: string;
   production_year?: string; 
   extra_images?: string[];  
+  slug: string;
   created_at?: string;
 }

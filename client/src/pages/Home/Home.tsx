@@ -1,131 +1,194 @@
-import { Link } from 'react-router-dom';
-import BeforeAfterSlider from '../../components/BeforeAfterSlider';
-import ServicesSection from '../../components/ServicesSection';
-import ContactSection from '../../components/ContactSection';
-import { useGallery } from '../../hooks/useGallery';
-import SEO from '../../components/SEO';
+// Imports
+import { Link } from "react-router-dom";
+// import BeforeAfterSlider from '../../components/BeforeAfterSlider';
+import ServicesSection from "../../components/ServicesSection";
+import ContactSection from "../../components/ContactSection";
+import { useGallery } from "../../hooks/useGallery";
+import ProjectCard from "../../components/ProjectCard";
+import SEO from "../../components/SEO";
+import { ChevronRight } from "lucide-react";
+
+// --- SWIPER IMPORTS ---
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Pagination, Autoplay } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
 
 const Home = () => {
-  const { projects, loading, error } = useGallery();
+    const { projects, loading } = useGallery();
 
-  // Smart Scroll Helper
-  const scrollToSection = (id: string) => {
-    const element = document.getElementById(id);
-    if (element) {
-      const headerOffset = 80; 
-      const elementPosition = element.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+    const scrollToContact = () => {
+        const contactSection = document.getElementById("contact");
+        if (contactSection) {
+            contactSection.scrollIntoView({ behavior: "smooth" });
+        }
+    };
 
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: "smooth"
-      });
-    }
-  };
+    const scrollToServices = () => {
+        const section = document.getElementById("services");
+        if (section) {
+            const headerOffset = 80;
+            const elementPosition = section.getBoundingClientRect().top;
+            const offsetPosition =
+                elementPosition + window.pageYOffset - headerOffset;
+            window.scrollTo({ top: offsetPosition, behavior: "smooth" });
+        }
+    };
 
-  return (
-    <div className="min-h-screen bg-slate-900 text-white font-sans selection:bg-neon-blue selection:text-black">
-      
-      {/* --- HERO SECTION --- */}
-      
-      <div className="relative min-h-screen flex flex-col items-center justify-center text-center p-6 overflow-hidden">
-        <SEO 
-        title="Начало" 
-        description="Най-доброто студио за реставрация на фарове в България. Полиране, UV фолио, LED тунинг и смяна на лупи."
-      />
-        {/* Desktop Video */}
-        <video autoPlay loop muted playsInline className="hidden md:block absolute top-0 left-0 w-full h-full object-cover z-0">
-          <source src="/hero.mp4" type="video/mp4" />
-        </video>
+    const handleSmoothLoop = (e: React.SyntheticEvent<HTMLVideoElement>) => {
+        const video = e.currentTarget;
+        const timeLeft = video.duration - video.currentTime;
+        const fadeDuration = 1.5;
 
-        {/* Mobile Video */}
-        <video autoPlay loop muted playsInline className="block md:hidden absolute top-0 left-0 w-full h-full object-cover z-0">
-          <source src="/hero-mobile.mp4" type="video/mp4" />
-        </video>
+        if (timeLeft < fadeDuration) {
+            const opacity = timeLeft / fadeDuration;
+            video.style.opacity = Math.max(0, opacity).toString();
+        } else if (video.currentTime < fadeDuration) {
+            const opacity = video.currentTime / fadeDuration;
+            video.style.opacity = Math.min(1, opacity).toString();
+        } else {
+            video.style.opacity = "1";
+        }
+    };
 
-        <div className="absolute inset-0 bg-black/70 z-10"></div>
-        
-        <div className="relative z-20 flex flex-col items-center max-w-4xl mx-auto mt-16">
-          <h1 className="text-5xl md:text-8xl font-black mb-6 tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-200 to-gray-500 drop-shadow-[0_0_25px_rgba(0,243,255,0.2)]">
-            LED LIGHTNING
-          </h1>
-          
-          <p className="text-xl md:text-2xl text-gray-300 max-w-2xl mb-10 font-light leading-relaxed">
-            Професионално реставриране и полиране на фарове. <br />
-            <span className="text-white font-bold border-b-2 border-neon-blue pb-1">Виж пътя ясно отново.</span>
-          </p>
-          
-          <div className="flex flex-col sm:flex-row gap-6">
-            {/* Contact Button */}
-            <button 
-              onClick={() => scrollToSection('contact')}
-              className="px-8 py-4 bg-neon-blue text-black font-extrabold text-lg rounded hover:bg-white hover:scale-105 transition-all duration-300 shadow-[0_0_20px_rgba(0,243,255,0.6)] uppercase tracking-wide"
-            >
-              Запиши Час
-            </button>
+    return (
+        <div className="min-h-screen bg-slate-900 text-white font-sans selection:bg-neon-blue selection:text-black">
+            <SEO title="Начало" />
 
-            {/* Services Button - Now uses smooth scroll */}
-            <button 
-              onClick={() => scrollToSection('services')}
-              className="px-8 py-4 border border-white/30 text-white font-bold text-lg rounded hover:bg-white/10 hover:border-white transition-all duration-300 backdrop-blur-sm uppercase tracking-wide"
-            >
-              Виж Услуги
-            </button>
-          </div>
-        </div>
+            {/* HERO SECTION */}
+            <div className="relative min-h-screen flex flex-col items-center justify-center text-center p-6 overflow-hidden">
+                <video
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    onTimeUpdate={handleSmoothLoop}
+                    className="hidden md:block absolute top-0 left-0 w-full h-full object-cover z-0 transition-opacity duration-75"
+                >
+                    <source src="/hero.mp4" type="video/mp4" />
+                </video>
+                <video
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    onTimeUpdate={handleSmoothLoop}
+                    className="block md:hidden absolute top-0 left-0 w-full h-full object-cover z-0 transition-opacity duration-75"
+                >
+                    <source src="/hero-mobile.mp4" type="video/mp4" />
+                </video>
 
-        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-20 animate-bounce text-gray-400">
-           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" /></svg>
-        </div>
-      </div>
+                <div className="absolute inset-0 bg-black/70 z-10"></div>
 
-      {/* --- SERVICES --- */}
-      <ServicesSection />
+                <div className="relative z-20 flex flex-col items-center max-w-4xl mx-auto mt-16">
+                    <h1 className="text-5xl md:text-8xl font-black mb-6 tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-200 to-gray-500 drop-shadow-[0_0_25px_rgba(0,243,255,0.2)]">
+                        LED LIGHTNING
+                    </h1>
+                    <p className="text-xl md:text-2xl text-gray-300 max-w-2xl mb-10 font-light leading-relaxed">
+                        Професионално реставриране и полиране на фарове. <br />
+                        <span className="text-white font-bold border-b-2 border-neon-blue pb-1">
+                            Виж пътя ясно отново.
+                        </span>
+                    </p>
+                    <div className="flex flex-col sm:flex-row gap-6">
+                        <button
+                            onClick={scrollToContact}
+                            className="px-8 py-4 bg-[#00f3ff] text-black font-extrabold text-lg rounded-sm hover:bg-white hover:text-black transition-all duration-300 shadow-[0_0_20px_rgba(0,243,255,0.6)] hover:shadow-[0_0_30px_rgba(255,255,255,0.8)] uppercase tracking-wide hover:scale-105"
+                        >
+                            Запиши Час
+                        </button>
+                        <button
+                            onClick={scrollToServices}
+                            className="px-8 py-4 border border-white/30 text-white font-bold text-lg rounded-sm backdrop-blur-sm uppercase tracking-wide transition-all duration-300 hover:bg-[#00f3ff] hover:text-black hover:border-[#00f3ff] hover:shadow-[0_0_20px_rgba(0,243,255,0.6)]"
+                        >
+                            Виж Услуги
+                        </button>
+                    </div>
+                </div>
 
-      {/* --- GALLERY --- */}
-      <div className="p-8 max-w-7xl mx-auto py-24">
-        <div className="flex flex-col items-center mb-16">
-          <h2 className="text-4xl font-bold tracking-wider text-center mb-4">
-            <span className="text-neon-blue">РЕАЛНИ</span> РЕЗУЛТАТИ
-          </h2>
-          <div className="h-1 w-24 bg-neon-blue shadow-[0_0_15px_#00f3ff]"></div>
-        </div>
-        
-        {error && <div className="text-red-400 bg-red-900/20 p-4 rounded text-center">Неуспешно зареждане.</div>}
-        {loading && <p className="text-center text-gray-500 animate-pulse">Зареждане...</p>}
-        {projects.length === 0 && !loading && !error && <p className="text-center text-gray-500">Няма добавени проекти.</p>}
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-          {projects.map((post) => (
-            <div key={post.id} className="bg-slate-900 rounded-2xl overflow-hidden border border-slate-800 hover:border-neon-blue/50 transition-all duration-300 shadow-2xl hover:shadow-[0_0_30px_rgba(0,243,255,0.1)] group">
-              <Link to={`/project/${post.id}`} className="block relative">
-                 <div className="pointer-events-none"> 
-                   <BeforeAfterSlider beforeImage={post.before_image_url} afterImage={post.after_image_url} />
-                 </div>
-                 <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity z-30 duration-300">
-                    <span className="text-white font-bold border-2 border-white px-6 py-2 rounded-full tracking-widest hover:bg-white hover:text-black transition-colors">ВИЖ ДЕТАЙЛИ</span>
-                 </div>
-              </Link>
-              <div className="p-8 relative">
-                <Link to={`/project/${post.id}`}>
-                  <h3 className="text-2xl font-bold text-white mb-3 hover:text-neon-blue transition-colors uppercase">{post.car_model}</h3>
-                </Link>
-                <p className="text-gray-400 text-sm leading-relaxed line-clamp-2 border-l-2 border-neon-blue/30 pl-3">{post.description}</p>
-                {post.production_year && (
-                   <div className="absolute top-8 right-8">
-                      <span className="text-xs font-mono text-neon-blue border border-neon-blue/30 px-2 py-1 rounded bg-neon-blue/5">{post.production_year}</span>
-                   </div>
-                )}
-              </div>
+                <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-20 animate-bounce text-gray-400">
+                    <svg
+                        className="w-6 h-6"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M19 14l-7 7m0 0l-7-7m7 7V3"
+                        />
+                    </svg>
+                </div>
             </div>
-          ))}
-        </div>
-      </div>
 
-      {/* --- CONTACT --- */}
-      <ContactSection /> 
-    </div>
-  );
+            {/* SERVICES */}
+            <ServicesSection />
+
+            {/* --- CAROUSEL SECTION (SWIPER JS) --- */}
+            <div className="py-24 bg-gradient-to-b from-slate-900 to-black overflow-hidden relative">
+                <div className="max-w-7xl mx-auto px-6">
+                    <div className="flex flex-col items-center mb-12">
+                        <h2 className="text-4xl font-bold tracking-wider text-center mb-4">
+                            <span className="text-neon-blue">ПОСЛЕДНИ</span>{" "}
+                            ПРОЕКТИ
+                        </h2>
+                        <div className="h-1 w-24 bg-neon-blue shadow-[0_0_15px_#00f3ff]"></div>
+                    </div>
+
+                    {loading && (
+                        <p className="text-center text-gray-500 animate-pulse">
+                            Зареждане...
+                        </p>
+                    )}
+
+                    {!loading && projects.length > 0 && (
+                        <Swiper
+                            modules={[Navigation, Pagination, Autoplay]}
+                            spaceBetween={30} // Gap between slides in px
+                            slidesPerView={1} // Default (Mobile)
+                            navigation // Enables Arrows
+                            pagination={{ clickable: true }} // Enables Dots
+                            autoplay={{
+                                delay: 5000,
+                                disableOnInteraction: false,
+                                pauseOnMouseEnter: true,
+                            }}
+                            breakpoints={{
+                                640: { slidesPerView: 1 }, // Mobile
+                                768: { slidesPerView: 2 }, // Tablet
+                                1024: { slidesPerView: 3 }, // Desktop
+                            }}
+                            className="pb-12" // Padding bottom for dots space
+                        >
+                            {projects.slice(0, 6).map((post) => (
+                                <SwiperSlide key={post.id} className="h-auto">
+                                    {/* 'h-auto' ensures all cards stretch to same height */}
+                                    <div className="h-full py-2">
+                                        <ProjectCard project={post} />
+                                    </div>
+                                </SwiperSlide>
+                            ))}
+                        </Swiper>
+                    )}
+
+                    <div className="mt-12 text-center">
+                        <Link
+                            to="/gallery"
+                            className="inline-flex items-center gap-2 border border-white/30 px-8 py-3 rounded-full text-white font-bold transition-all duration-300 hover:bg-[#00f3ff] hover:text-black hover:border-[#00f3ff] hover:shadow-[0_0_20px_rgba(0,243,255,0.6)]"
+                        >
+                            ВИЖ ВСИЧКИ ПРОЕКТИ
+                            <ChevronRight size={20} />
+                        </Link>
+                    </div>
+                </div>
+            </div>
+
+            <ContactSection />
+        </div>
+    );
 };
 
 export default Home;

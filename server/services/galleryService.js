@@ -1,21 +1,29 @@
 const supabase = require('../config/supabase');
 
+const createSlug = (text) => {
+  return text
+    .toString()
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, '-')     
+    .replace(/[^\w\-]+/g, '') 
+    .replace(/\-\-+/g, '-'); 
+};
+
 const getAllProjects = async () => {
   const { data, error } = await supabase
     .from('gallery_posts')
     .select('*')
     .order('created_at', { ascending: false });
-
   if (error) throw new Error(error.message);
   return data;
 };
 
-// NEW: Get one specific project
-const getProjectById = async (id) => {
+const getProjectBySlug = async (slug) => {
   const { data, error } = await supabase
     .from('gallery_posts')
     .select('*')
-    .eq('id', id)
+    .eq('slug', slug) // Search by slug column
     .single();
 
   if (error) throw new Error(error.message);
@@ -23,8 +31,12 @@ const getProjectById = async (id) => {
 };
 
 const createProject = async (projectData) => {
-  // Now includes production_year and extra_images
   const { car_model, description, before_image_url, after_image_url, production_year, extra_images } = projectData;
+
+  // 1. Generate basic slug
+  let slug = createSlug(car_model);
+  
+  slug = `${slug}-${Date.now()}`; 
 
   const { data, error } = await supabase
     .from('gallery_posts')
@@ -34,7 +46,8 @@ const createProject = async (projectData) => {
       before_image_url, 
       after_image_url,
       production_year,
-      extra_images: extra_images || [] 
+      extra_images: extra_images || [],
+      slug 
     }])
     .select();
 
@@ -42,8 +55,8 @@ const createProject = async (projectData) => {
   return data;
 };
 
-// NEW: Update an existing project
 const updateProject = async (id, updates) => {
+  
   const { data, error } = await supabase
     .from('gallery_posts')
     .update(updates)
@@ -60,14 +73,13 @@ const deleteProject = async (id) => {
     .delete()
     .eq('id', id)
     .select();
-
   if (error) throw new Error(error.message);
   return data;
 };
 
 module.exports = {
   getAllProjects,
-  getProjectById,
+  getProjectBySlug, 
   createProject,
   updateProject,
   deleteProject

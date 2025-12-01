@@ -39,4 +39,29 @@ body {
   background-color: #00f3ff; 
   border: 0; 
   box-shadow: 0 0 15px #00f3ff; 
+};
+/* --- SWIPER JS CUSTOMIZATION --- */
+/* 1. Neon Arrows */
+.swiper-button-next,
+.swiper-button-prev {
+  color: #00f3ff !important; 
+  text-shadow: 0 0 10px rgba(0, 243, 255, 0.5); 
+  transition: transform 0.2s ease;
+}
+
+.swiper-button-next:hover,
+.swiper-button-prev:hover {
+  color: white !important;
+  transform: scale(1.1); 
+}
+
+.swiper-pagination-bullet {
+  background: white !important;
+  opacity: 0.3;
+}
+
+.swiper-pagination-bullet-active {
+  background: #00f3ff !important;
+  opacity: 1;
+  box-shadow: 0 0 10px #00f3ff;
 }
