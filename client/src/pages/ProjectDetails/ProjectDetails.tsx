@@ -4,6 +4,7 @@ import api from '../../api/axios';
 import type { Project } from '../../types';
 import BeforeAfterSlider from '../../components/BeforeAfterSlider';
 import Navbar from '../../components/Navbar';
+import SEO from '../../components/SEO'
 
 const ProjectDetails = () => {
   const { id } = useParams();
@@ -29,7 +30,12 @@ const ProjectDetails = () => {
 
   return (
     <div className="min-h-screen bg-slate-900 text-white font-sans pb-20">
-      
+      <SEO 
+        title={project.car_model}
+        description={`Вижте как възстановихме фаровете на ${project.car_model}. ${project.description.substring(0, 100)}...`}
+        image={project.after_image_url} 
+        type="article"
+      />
       {/* 1. Header Section */}
       <div className="pt-32 px-6 max-w-7xl mx-auto text-center">
         <h1 className="text-4xl md:text-5xl font-bold text-white mb-2 uppercase">

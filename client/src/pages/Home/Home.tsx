@@ -3,6 +3,7 @@ import BeforeAfterSlider from '../../components/BeforeAfterSlider';
 import ServicesSection from '../../components/ServicesSection';
 import ContactSection from '../../components/ContactSection';
 import { useGallery } from '../../hooks/useGallery';
+import SEO from '../../components/SEO';
 
 const Home = () => {
   const { projects, loading, error } = useGallery();
@@ -26,8 +27,12 @@ const Home = () => {
     <div className="min-h-screen bg-slate-900 text-white font-sans selection:bg-neon-blue selection:text-black">
       
       {/* --- HERO SECTION --- */}
+      
       <div className="relative min-h-screen flex flex-col items-center justify-center text-center p-6 overflow-hidden">
-        
+        <SEO 
+        title="Начало" 
+        description="Най-доброто студио за реставрация на фарове в България. Полиране, UV фолио, LED тунинг и смяна на лупи."
+      />
         {/* Desktop Video */}
         <video autoPlay loop muted playsInline className="hidden md:block absolute top-0 left-0 w-full h-full object-cover z-0">
           <source src="/hero.mp4" type="video/mp4" />
