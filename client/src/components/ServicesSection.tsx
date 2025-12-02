@@ -50,8 +50,8 @@ const ServicesSection = () => {
           </p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {services.map((service) => (
-                <div className="group relative bg-slate-900/40 backdrop-blur-sm border border-slate-800 p-8 rounded-2xl hover:border-[#00f3ff]/50 transition-all duration-300 hover:transform hover:-translate-y-2 hover:shadow-[0_10px_30px_rgba(0,243,255,0.1)] h-full">
+          {services.map((service, index) => (
+                <div key={index} data-aos="fade-up" data-aos-delay={index * 100} className="group relative bg-slate-900/40 backdrop-blur-sm border border-slate-800 p-8 rounded-2xl hover:border-[#00f3ff]/50 transition-all duration-300 hover:transform hover:-translate-y-2 hover:shadow-[0_10px_30px_rgba(0,243,255,0.1)] h-full">
                   <div className="bg-slate-800 w-16 h-16 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 border border-slate-700 group-hover:border-[#00f3ff] shadow-lg">
                     {service.icon}
                   </div>

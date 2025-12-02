@@ -9,7 +9,21 @@ import NotFound from './pages/NotFound/NotFound';
 import TestimonialsPage from './pages/TestimonialsPage/TestimonialsPage';
 import ScrollToTop from './components/ScrollToTop';
 
+import AOS from 'aos';
+import 'aos/dist/aos.css';
+import { useEffect } from 'react';
+
 function App() {
+
+  useEffect(() => {
+    AOS.init({
+      duration: 800,      // Animation duration (0.8s)
+      once: true,         // Only animate once
+      mirror: false,      // Do not re-animate on scroll up
+      offset: 100,        // Start animation 100px before element is in view
+    });
+  }, []);
+
   return (
     <div className="antialiased">
       <ScrollToTop />

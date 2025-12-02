@@ -16,7 +16,6 @@ const TestimonialsPage = () => {
   const [reviews, setReviews] = useState<Testimonial[]>([]);
   const [loading, setLoading] = useState(true);
   
-  // Lightbox State
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -50,10 +49,12 @@ const TestimonialsPage = () => {
 
   return (
     <div className="min-h-screen bg-slate-900 text-white font-sans">
-      <SEO title="Клиентски Отзиви" description="Вижте какво казват клиентите за LED Lightning Service." />
+      <SEO title="Клиентски Отзиви" description="Вижте какво казват клиентите за VPrime Lights." />
 
       <div className="pt-32 pb-20 px-6 max-w-7xl mx-auto">
-        <div className="text-center mb-16">
+        
+        {/* HEADER SECTION (Animate this on mount) */}
+        <div data-aos="fade-up" className="text-center mb-16">
           <h1 className="text-4xl font-bold tracking-wider mb-4">
             ДОВОЛНИ <span className="text-[#00f3ff]">КЛИЕНТИ</span>
           </h1>
@@ -62,19 +63,31 @@ const TestimonialsPage = () => {
           </p>
         </div>
 
+        {/* LOADING STATE */}
         {loading && <div className="text-center py-20 animate-pulse text-gray-500">Зареждане на отзиви...</div>}
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {reviews.map((review, index) => (
-             // Removed the fixed height wrapper here
-             <div key={review.id}>
-               <TestimonialCard 
-                 review={review} 
-                 onClick={() => openLightbox(index)} 
-               />
-             </div>
-          ))}
-        </div>
+        {/* ERROR STATE */}
+        {!loading && reviews.length === 0 && (
+            <div className="text-center py-20 text-gray-500">Все още няма добавени отзиви.</div>
+        )}
+
+        {/* CONTENT GRID  */}
+        {!loading && reviews.length > 0 && (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {reviews.map((review, index) => (
+                <div 
+                    key={review.id} 
+                    data-aos="fade-up" 
+                    data-aos-delay={index * 100} 
+                >
+                    <TestimonialCard 
+                        review={review} 
+                        onClick={() => openLightbox(index)} 
+                    />
+                </div>
+              ))}
+            </div>
+        )}
       </div>
 
       <ContactSection /> 

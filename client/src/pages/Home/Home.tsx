@@ -83,32 +83,31 @@ const Home = () => {
 
         <div className="absolute inset-0 bg-black/70 z-10"></div>
         
-        <div className="relative z-20 flex flex-col items-center max-w-4xl mx-auto mt-16">
+<div className="relative z-20 flex flex-col items-center max-w-4xl mx-auto mt-16">
           
-            <h1 className="text-5xl md:text-8xl font-black mb-6 tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-200 to-gray-500 drop-shadow-[0_0_25px_rgba(0,243,255,0.2)]">
-              VPRIME LIGHTS
-            </h1>
+          {/* Animate Title DOWN */}
+          <h1 
+             data-aos="fade-down" 
+             data-aos-duration="1000" 
+             className="text-5xl md:text-8xl font-black mb-6 tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-200 to-gray-500 drop-shadow-[0_0_25px_rgba(0,243,255,0.2)]"
+          >
+            VPRIME LIGHTS
+          </h1>
           
-            <p className="text-xl md:text-2xl text-gray-300 max-w-2xl mb-10 font-light leading-relaxed">
-              Професионално реставриране и полиране на фарове. <br />
-              <span className="text-white font-bold border-b-2 border-neon-blue pb-1">Виж пътя ясно отново.</span>
-            </p>
+          {/* Animate Text UP with slight delay */}
+          <p 
+             data-aos="fade-up" 
+             data-aos-delay="200"
+             className="text-xl md:text-2xl text-gray-300 max-w-2xl mb-10 font-light leading-relaxed"
+          >
+            Професионално реставриране и полиране на фарове. <br />
+            <span className="text-white font-bold border-b-2 border-neon-blue pb-1">Виж пътя ясно отново.</span>
+          </p>
           
-            <div className="flex flex-col sm:flex-row gap-6">
-              <button 
-                onClick={scrollToContact}
-                className="px-8 py-4 bg-[#00f3ff] text-black font-extrabold text-lg rounded-sm hover:bg-white hover:text-black transition-all duration-300 shadow-[0_0_20px_rgba(0,243,255,0.6)] hover:shadow-[0_0_30px_rgba(255,255,255,0.8)] uppercase tracking-wide hover:scale-105"
-              >
-                Запиши Час
-              </button>
-
-              <button 
-                onClick={scrollToServices}
-                className="px-8 py-4 border border-white/30 text-white font-bold text-lg rounded-sm backdrop-blur-sm uppercase tracking-wide transition-all duration-300 hover:bg-[#00f3ff] hover:text-black hover:border-[#00f3ff] hover:shadow-[0_0_20px_rgba(0,243,255,0.6)]"
-              >
-                Виж Услуги
-              </button>
-            </div>
+          {/* Animate Buttons UP with more delay */}
+          <div data-aos="fade-up" data-aos-delay="400" className="flex flex-col sm:flex-row gap-6">
+            {/* ... buttons ... */}
+          </div>
 
         </div>
 
