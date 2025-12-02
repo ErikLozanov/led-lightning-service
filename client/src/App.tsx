@@ -12,10 +12,12 @@ import ScrollToTop from './components/ScrollToTop';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import { useEffect } from 'react';
+import CookieConsent from './components/CookieConsent';
 
 function App() {
 
   useEffect(() => {
+
     AOS.init({
       duration: 800,      // Animation duration (0.8s)
       once: true,         // Only animate once
@@ -40,6 +42,7 @@ function App() {
           <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
+      <CookieConsent />
     </div>
   )
 }
