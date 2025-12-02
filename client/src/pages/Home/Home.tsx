@@ -35,22 +35,22 @@ const Home = () => {
     }
   }, [location]);
 
-  const scrollToContact = () => {
-    const contactSection = document.getElementById('contact');
-    if (contactSection) {
-      contactSection.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
+  // const scrollToContact = () => {
+  //   const contactSection = document.getElementById('contact');
+  //   if (contactSection) {
+  //     contactSection.scrollIntoView({ behavior: 'smooth' });
+  //   }
+  // };
 
-  const scrollToServices = () => {
-    const section = document.getElementById('services');
-    if (section) {
-      const headerOffset = 80;
-      const elementPosition = section.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-      window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
-    }
-  };
+  // const scrollToServices = () => {
+  //   const section = document.getElementById('services');
+  //   if (section) {
+  //     const headerOffset = 80;
+  //     const elementPosition = section.getBoundingClientRect().top;
+  //     const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+  //     window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+  //   }
+  // };
 
   const handleSmoothLoop = (e: React.SyntheticEvent<HTMLVideoElement>) => {
     const video = e.currentTarget;

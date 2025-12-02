@@ -21,7 +21,7 @@ const Dashboard = () => {
   // Data State
   const [projects, setProjects] = useState<Project[]>([]);
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [_, setLoading] = useState(true);
   
   // View State
   const [activeTab, setActiveTab] = useState<'projects' | 'testimonials'>('projects');

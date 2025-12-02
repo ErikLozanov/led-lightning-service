@@ -11,7 +11,6 @@ const SEO = ({
   title, 
   description = "Професионално реставриране и тунинг на фарове. Вижте пътя ясно отново с VPrime Lights.", 
   image = "/hero-mobile.mp4", 
-  type = "website" 
 }: SEOProps): ReactNode => {
   
   const siteTitle = "VPrime Lights";
