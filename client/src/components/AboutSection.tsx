@@ -1,5 +1,4 @@
 import { Award, Users, Wrench } from 'lucide-react';
-import FadeIn from './FadeIn';
 
 const AboutSection = () => {
   return (
@@ -12,7 +11,6 @@ const AboutSection = () => {
         
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           
-          <FadeIn direction="right">
             <div>
               <div className="flex items-center gap-4 mb-6">
                  <div className="h-1 w-12 bg-[#00f3ff] shadow-[0_0_10px_#00f3ff]"></div>
@@ -44,9 +42,7 @@ const AboutSection = () => {
                   ))}
               </div>
             </div>
-          </FadeIn>
 
-          <FadeIn direction="left" delay={0.2}>
             <div className="relative">
                <div className="rounded-2xl overflow-hidden border border-slate-700 shadow-2xl relative z-10">
                   <img src="https://images.unsplash.com/photo-1487754180451-c456f719a1fc?q=80&w=1000&auto=format&fit=crop" alt="Workshop" className="w-full h-auto object-cover hover:scale-105 transition-transform duration-700"/>
@@ -64,7 +60,6 @@ const AboutSection = () => {
                   </div>
                </div>
             </div>
-          </FadeIn>
 
         </div>
 
@@ -73,14 +68,12 @@ const AboutSection = () => {
               { icon: Wrench, num: "1200+", text: "Реставрирани Фара" },
               { icon: Users, num: "850+", text: "Доволни Клиенти" },
               { icon: Award, num: "100%", text: "Гаранция за Качество" }
-            ].map((stat, i) => (
-               <FadeIn key={i} delay={0.4 + (i * 0.1)} fullWidth>
+            ].map((stat) => (
                   <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700 p-8 rounded-xl hover:border-[#00f3ff]/50 transition-colors group text-center h-full">
                       <stat.icon className="w-10 h-10 text-gray-500 group-hover:text-[#00f3ff] mx-auto mb-4 transition-colors" />
                       <h3 className="text-4xl font-bold text-white mb-2 group-hover:scale-110 transition-transform">{stat.num}</h3>
                       <p className="text-gray-400">{stat.text}</p>
                   </div>
-               </FadeIn>
             ))}
         </div>
 

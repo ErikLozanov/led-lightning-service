@@ -1,5 +1,4 @@
 import { Wrench, ShieldCheck, Sparkles, Lightbulb, Repeat, Eye } from 'lucide-react';
-import FadeIn from './FadeIn';
 
 const services = [
   {
@@ -42,7 +41,6 @@ const ServicesSection = () => {
 
       <div className="max-w-7xl mx-auto px-6">
         
-        <FadeIn className="text-center mb-16">
           <h2 className="text-4xl font-bold text-white mb-4 tracking-wider">
             НАШИТЕ <span className="text-[#00f3ff]">УСЛУГИ</span>
           </h2>
@@ -50,11 +48,9 @@ const ServicesSection = () => {
           <p className="text-gray-400 mt-6 max-w-2xl mx-auto text-lg">
             Предлагаме пълна гама от професионални услуги за възстановяване и подобряване на автомобилните светлини.
           </p>
-        </FadeIn>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {services.map((service, index) => (
-            <FadeIn key={index} delay={index * 0.1} fullWidth>
+          {services.map((service) => (
                 <div className="group relative bg-slate-900/40 backdrop-blur-sm border border-slate-800 p-8 rounded-2xl hover:border-[#00f3ff]/50 transition-all duration-300 hover:transform hover:-translate-y-2 hover:shadow-[0_10px_30px_rgba(0,243,255,0.1)] h-full">
                   <div className="bg-slate-800 w-16 h-16 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 border border-slate-700 group-hover:border-[#00f3ff] shadow-lg">
                     {service.icon}
@@ -71,7 +67,6 @@ const ServicesSection = () => {
                   <div className="absolute bottom-6 right-6 opacity-50 group-hover:opacity-100 transition-opacity">
                   </div>
                 </div>
-            </FadeIn>
           ))}
         </div>
 

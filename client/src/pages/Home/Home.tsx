@@ -1,13 +1,11 @@
 import { useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import BeforeAfterSlider from '../../components/BeforeAfterSlider';
 import ServicesSection from '../../components/ServicesSection';
 import ContactSection from '../../components/ContactSection';
 import TestimonialsSection from '../../components/TestimonialsSection';
 import AboutSection from '../../components/AboutSection';
 import ProjectCard from '../../components/ProjectCard';
 import SEO from '../../components/SEO';
-import FadeIn from '../../components/FadeIn'; // <--- Import
 import { useGallery } from '../../hooks/useGallery';
 import { ChevronRight } from 'lucide-react';
 
@@ -18,7 +16,7 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 
 const Home = () => {
-  const { projects, loading, error } = useGallery();
+  const { projects, loading } = useGallery();
   const location = useLocation();
 
   useEffect(() => {
@@ -87,20 +85,15 @@ const Home = () => {
         
         <div className="relative z-20 flex flex-col items-center max-w-4xl mx-auto mt-16">
           
-          <FadeIn direction="down">
             <h1 className="text-5xl md:text-8xl font-black mb-6 tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-200 to-gray-500 drop-shadow-[0_0_25px_rgba(0,243,255,0.2)]">
               VPRIME LIGHTS
             </h1>
-          </FadeIn>
           
-          <FadeIn delay={0.2}>
             <p className="text-xl md:text-2xl text-gray-300 max-w-2xl mb-10 font-light leading-relaxed">
               Професионално реставриране и полиране на фарове. <br />
               <span className="text-white font-bold border-b-2 border-neon-blue pb-1">Виж пътя ясно отново.</span>
             </p>
-          </FadeIn>
           
-          <FadeIn delay={0.4}>
             <div className="flex flex-col sm:flex-row gap-6">
               <button 
                 onClick={scrollToContact}
@@ -116,7 +109,6 @@ const Home = () => {
                 Виж Услуги
               </button>
             </div>
-          </FadeIn>
 
         </div>
 
@@ -135,19 +127,16 @@ const Home = () => {
       <div className="py-24 bg-gradient-to-b from-slate-900 to-black overflow-hidden relative">
         <div className="max-w-7xl mx-auto px-6"> 
           
-          <FadeIn>
             <div className="flex flex-col items-center mb-12">
               <h2 className="text-4xl font-bold tracking-wider text-center mb-4">
                 <span className="text-neon-blue">ПОСЛЕДНИ</span> ПРОЕКТИ
               </h2>
               <div className="h-1 w-24 bg-neon-blue shadow-[0_0_15px_#00f3ff]"></div>
             </div>
-          </FadeIn>
 
           {loading && <p className="text-center text-gray-500 animate-pulse">Зареждане...</p>}
 
           {!loading && projects.length > 0 && (
-            <FadeIn delay={0.2} fullWidth>
               <Swiper
                 modules={[Navigation, Pagination, Autoplay]}
                 spaceBetween={30}
@@ -171,10 +160,8 @@ const Home = () => {
                   </SwiperSlide>
                 ))}
               </Swiper>
-            </FadeIn>
           )}
 
-          <FadeIn delay={0.4}>
             <div className="mt-12 text-center">
               <Link 
                 to="/gallery" 
@@ -184,7 +171,6 @@ const Home = () => {
                 <ChevronRight size={20} />
               </Link>
             </div>
-          </FadeIn>
 
         </div>
       </div>
