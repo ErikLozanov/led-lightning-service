@@ -1,35 +1,80 @@
-import { Wrench, ShieldCheck, Sparkles, Lightbulb, Repeat, Eye } from 'lucide-react';
+import { Wrench, ShieldCheck, Sparkles, Lightbulb, Repeat, Eye, Sun, Zap, Droplets, Unlock, Hammer, PenTool, PlusCircle, ShoppingCart } from 'lucide-react';
 
 const services = [
   {
-    title: "Цялостно Рециклиране",
-    description: "Пълно разглобяване, почистване на рефлектори, смяна на лупи и настройки за перфектен лъч.",
+    title: "Рециклиране на фарове",
+    description: "Пълно възстановяване на функционалността и фабричния вид на вашите фарове.",
     icon: <Wrench className="w-10 h-10 text-[#00f3ff]" />,
   },
   {
-    title: "Пастиране и Полиране",
-    description: "Премахване на жълтите отлагания и драскотини за кристална прозрачност.",
-    icon: <Sparkles className="w-10 h-10 text-[#00f3ff]" />,
+    title: "Възстановяване на рефлектори",
+    description: "Нанасяне на ново огледално покритие върху изгорели рефлектори за максимална осветеност.",
+    icon: <Sun className="w-10 h-10 text-[#00f3ff]" />,
   },
   {
-    title: "UV Защитно Фолио",
-    description: "Висококачествено PPF фолио, което предпазва фаровете от камъчета и повторно пожълтяване.",
-    icon: <ShieldCheck className="w-10 h-10 text-[#00f3ff]" />,
-  },
-  {
-    title: "Смяна на Стъкла",
-    description: "Подмяна на напукани или силно увредени стъкла с чисто нови поликарбонатни капаци.",
-    icon: <Repeat className="w-10 h-10 text-[#00f3ff]" />,
-  },
-  {
-    title: "LED Тунинг",
-    description: "Инсталиране на 'Angel Eyes', 'Devil Eyes' или динамични мигачи за модерна визия.",
+    title: "Вграждане на Bi-Led системи",
+    description: "Модернизиране на осветлението чрез имплантиране на мощни Bi-LED лупи.",
     icon: <Lightbulb className="w-10 h-10 text-[#00f3ff]" />,
   },
   {
-    title: "Регулиране на Фарове",
-    description: "Прецизно машинно регулиране за максимална видимост и безопасност на пътя.",
+    title: "Ремонт на дневни светлини",
+    description: "Отстраняване на дефекти, мигане или пълно изгасване на фабричните DRL модули.",
+    icon: <Zap className="w-10 h-10 text-[#00f3ff]" />,
+  },
+  {
+    title: "Отстраняване на влага/вода",
+    description: "Професионално подсушаване и херметизиране за спиране на конденза завинаги.",
+    icon: <Droplets className="w-10 h-10 text-[#00f3ff]" />,
+  },
+  {
+    title: "Отваряне без следи",
+    description: "Разлепяне на фаровете по щадяща технология, запазваща корпуса и канта непокътнати.",
+    icon: <Unlock className="w-10 h-10 text-[#00f3ff]" />,
+  },
+  {
+    title: "Възстановяване на инсталация",
+    description: "Ремонт на изгорели кабели и букси вътре във фара за безопасно функциониране.",
+    icon: <Wrench className="w-10 h-10 text-[#00f3ff]" />,
+  },
+  {
+    title: "Лепене на счупени корпуси",
+    description: "Здраво и надеждно възстановяване на пукнатини и липсващи парчета от пластмасата.",
+    icon: <Hammer className="w-10 h-10 text-[#00f3ff]" />,
+  },
+  {
+    title: "Подмяна на лепило и стъкла",
+    description: "Смяна на старите напукани стъкла с нови и полагане на нов термо-устойчив силикон.",
+    icon: <Repeat className="w-10 h-10 text-[#00f3ff]" />,
+  },
+  {
+    title: "Почистване и полиране",
+    description: "Двустранно почистване и пастиране за премахване на мъглата и драскотините.",
+    icon: <Sparkles className="w-10 h-10 text-[#00f3ff]" />,
+  },
+  {
+    title: "Защитно фолио (PPF)",
+    description: "Монтаж на висок клас фолио за защита от камъчета, UV лъчи и повторно пожълтяване.",
+    icon: <ShieldCheck className="w-10 h-10 text-[#00f3ff]" />,
+  },
+  {
+    title: "Индивидуални проекти",
+    description: "Изработка на къстъм визия - боядисване на декорации, devil eyes и други.",
+    icon: <PenTool className="w-10 h-10 text-[#00f3ff]" />,
+  },
+  {
+    title: "Добавяне на дневни светлини",
+    description: "Интегриране на допълнителни LED ленти или модули за по-модерна визия.",
+    icon: <PlusCircle className="w-10 h-10 text-[#00f3ff]" />,
+  },
+  {
+    title: "Регулиране на фарове",
+    description: "Прецизна настройка на светлинния поток с професионален лазерен стенд.",
     icon: <Eye className="w-10 h-10 text-[#00f3ff]" />,
+  },
+  {
+    title: "Продажба на LED крушки",
+    description: "Висококачествени LED системи с гаранция, осигуряващи перфектна видимост.",
+    icon: <ShoppingCart className="w-10 h-10 text-[#00f3ff]" />,
   }
 ];
 
