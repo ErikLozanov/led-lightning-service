@@ -148,10 +148,10 @@ const Home = () => {
         )}
         
         <div className="relative z-20 flex flex-col items-center max-w-4xl mx-auto mt-16">
-          <h1 
+           <h1 
              data-aos="fade-down" 
              data-aos-duration="1000" 
-             className="text-5xl md:text-8xl font-black mb-6 tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-200 to-gray-500 drop-shadow-[0_0_25px_rgba(0,243,255,0.2)] pr-4 pb-2"
+             className="text-5xl md:text-8xl font-black mb-6 tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-200 to-gray-500 drop-shadow-[0_0_25px_rgba(0,243,255,0.2)] px-4 pb-2"
           >
             VPRIME LIGHTS
           </h1>
