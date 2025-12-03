@@ -85,8 +85,8 @@ const Navbar = () => {
               </Link>
             )}
 
-            <a href="tel:+359888888888" className="bg-[#00f3ff] text-black text-xs xl:text-sm font-extrabold px-3 py-2 xl:px-5 xl:py-2.5 rounded hover:bg-white transition-all shadow-[0_0_15px_rgba(0,243,255,0.5)] hover:shadow-[0_0_25px_rgba(255,255,255,0.8)] hover:scale-105 active:scale-95 whitespace-nowrap">
-              📞 088 888 8888
+            <a href="tel:+359893383533" className="bg-[#00f3ff] text-black text-xs xl:text-sm font-extrabold px-3 py-2 xl:px-5 xl:py-2.5 rounded hover:bg-white transition-all shadow-[0_0_15px_rgba(0,243,255,0.5)] hover:shadow-[0_0_25px_rgba(255,255,255,0.8)] hover:scale-105 active:scale-95 whitespace-nowrap">
+              📞 089 338 3533
             </a>
           </div>
 
@@ -125,8 +125,8 @@ const Navbar = () => {
             </div>
 
             <div className="mt-12 mb-8">
-                <a href="tel:+359888888888" className="flex items-center justify-center gap-3 w-full bg-slate-900 text-white text-lg font-bold py-4 rounded-xl border border-slate-700 active:scale-95 transition-transform hover:border-[#00f3ff] hover:text-[#00f3ff] hover:shadow-[0_0_15px_rgba(0,243,255,0.2)]">
-                    <Phone size={20} /> 088 888 8888
+                <a href="tel:+359893383533" className="flex items-center justify-center gap-3 w-full bg-slate-900 text-white text-lg font-bold py-4 rounded-xl border border-slate-700 active:scale-95 transition-transform hover:border-[#00f3ff] hover:text-[#00f3ff] hover:shadow-[0_0_15px_rgba(0,243,255,0.2)]">
+                    <Phone size={20} /> 089 338 3533
                 </a>
             </div>
         </div>

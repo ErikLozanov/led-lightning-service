@@ -18,12 +18,12 @@ const ContactSection = () => {
             Професионално отношение към детайла. Ние връщаме блясъка на вашия автомобил и гарантираме безопасността ви на пътя.
           </p>
           <div className="flex gap-4">
-            <a href="#" className="w-10 h-10 bg-slate-800 rounded-full flex items-center justify-center text-white hover:bg-neon-blue hover:text-black transition-all">
+            <a href="https://www.facebook.com/profile.php?id=61555367484659" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-slate-800 rounded-full flex items-center justify-center text-white hover:bg-neon-blue hover:text-black transition-all">
               <Facebook size={20} />
             </a>
-            <a href="#" className="w-10 h-10 bg-slate-800 rounded-full flex items-center justify-center text-white hover:bg-neon-blue hover:text-black transition-all">
+            {/* <a href="#" className="w-10 h-10 bg-slate-800 rounded-full flex items-center justify-center text-white hover:bg-neon-blue hover:text-black transition-all">
               <Instagram size={20} />
-            </a>
+            </a> */}
           </div>
         </div>
 
@@ -34,21 +34,21 @@ const ContactSection = () => {
           </h3>
           <ul className="space-y-4">
             <li>
-              <a href="tel:+359888888888" className="flex items-center gap-3 text-gray-300 hover:text-neon-blue transition-colors group">
+              <a href="tel:+359893383533" className="flex items-center gap-3 text-gray-300 hover:text-neon-blue transition-colors group">
                 <span className="bg-slate-800 p-2 rounded group-hover:bg-neon-blue group-hover:text-black transition-colors">
                    <Phone size={18} />
                 </span>
-                +359 88 888 8888
+                +359 89 338 3533
               </a>
             </li>
-            <li>
+            {/* <li>
               <a href="mailto:info@ledlightning.bg" className="flex items-center gap-3 text-gray-300 hover:text-neon-blue transition-colors group">
                 <span className="bg-slate-800 p-2 rounded group-hover:bg-neon-blue group-hover:text-black transition-colors">
                    <Mail size={18} />
                 </span>
                 info@ledlightning.bg
               </a>
-            </li>
+            </li> */}
             <li>
               <a href="viber://chat?number=%2B359888888888" className="flex items-center gap-3 text-gray-300 hover:text-neon-blue transition-colors group">
                 <span className="bg-slate-800 p-2 rounded group-hover:bg-purple-500 group-hover:text-white transition-colors">
