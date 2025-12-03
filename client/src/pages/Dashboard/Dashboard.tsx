@@ -6,40 +6,70 @@ import ProjectEditForm from '../../components/ProjectEditForm';
 import TestimonialUpload from '../../components/TestimonialUpload';
 import api from '../../api/axios';
 import type { Project } from '../../types';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
-// Define Testimonial Type locally
 interface Testimonial {
   id: number;
   client_name?: string;
   review_image_url: string;
 }
 
+interface ProjectsResponse {
+  projects: Project[];
+  total: number;
+  totalPages: number;
+}
+
+interface TestimonialsResponse {
+  testimonials: Testimonial[];
+  total: number;
+  totalPages: number;
+}
+
 const Dashboard = () => {
   const { session, signOut } = useAuth();
   const navigate = useNavigate();
   
-  // Data State
   const [projects, setProjects] = useState<Project[]>([]);
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
-  const [_, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
   
-  // View State
+  const [projectPage, setProjectPage] = useState(1);
+  const [projectTotalPages, setProjectTotalPages] = useState(1);
+  const [testimonialPage, setTestimonialPage] = useState(1);
+  const [testimonialTotalPages, setTestimonialTotalPages] = useState(1);
+
   const [activeTab, setActiveTab] = useState<'projects' | 'testimonials'>('projects');
-  const [viewMode, setViewMode] = useState<'list' | 'create' | 'edit'>('list');
+  const [viewMode, setViewMode] = useState<'list' | 'create' | 'edit' | 'create-testimonial'>('list');
   const [editingProject, setEditingProject] = useState<Project | null>(null);
 
-  // Fetch Logic
-  const fetchData = async () => {
+  const fetchProjects = async (page = 1) => {
     try {
       setLoading(true);
-      const [projRes, testRes] = await Promise.all([
-        api.get('/gallery'),
-        api.get('/testimonials')
-      ]);
-      setProjects(projRes.data);
-      setTestimonials(testRes.data);
+      const res = await api.get<ProjectsResponse>('/gallery', {
+        params: { page, limit: 9 } 
+      });
+      setProjects(res.data.projects);
+      setProjectTotalPages(res.data.totalPages);
+      setProjectPage(page);
     } catch (err) {
-      console.error("Failed to load data", err);
+      console.error("Failed to load projects", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchTestimonials = async (page = 1) => {
+    try {
+      setLoading(true);
+      const res = await api.get<TestimonialsResponse>('/testimonials', {
+        params: { page, limit: 12 } 
+      });
+      setTestimonials(res.data.testimonials);
+      setTestimonialTotalPages(res.data.totalPages);
+      setTestimonialPage(page);
+    } catch (err) {
+      console.error("Failed to load testimonials", err);
     } finally {
       setLoading(false);
     }
@@ -50,15 +80,15 @@ const Dashboard = () => {
       navigate('/admin');
       return;
     }
-    fetchData();
-  }, [session, navigate]);
+    if (activeTab === 'projects') fetchProjects(projectPage);
+    if (activeTab === 'testimonials') fetchTestimonials(testimonialPage);
+  }, [session, navigate, activeTab, projectPage, testimonialPage]); 
 
   const handleLogout = async () => {
     await signOut();
     navigate('/admin');
   };
 
-  // Delete Handlers
   const handleDeleteProject = async (id: number) => {
     if (!window.confirm("Сигурни ли сте?")) return;
     try {
@@ -86,7 +116,6 @@ const Dashboard = () => {
     <div className="min-h-screen bg-slate-900 text-white p-8 pt-32">
       <div className="max-w-6xl mx-auto">
         
-        {/* Header */}
         <div className="flex flex-col md:flex-row justify-between items-center mb-8 border-b border-slate-700 pb-6 gap-4">
           <h1 className="text-3xl font-bold text-white">Админ <span className="text-[#00f3ff]">Панел</span></h1>
           <div className="flex items-center gap-4">
@@ -95,23 +124,21 @@ const Dashboard = () => {
           </div>
         </div>
 
-        {/* TABS SWITCHER */}
         <div className="flex gap-4 mb-8">
           <button 
             onClick={() => { setActiveTab('projects'); setViewMode('list'); }}
             className={`px-6 py-3 rounded-lg font-bold transition-all ${activeTab === 'projects' ? 'bg-[#00f3ff] text-black' : 'bg-slate-800 text-gray-400 hover:text-white'}`}
           >
-            Управление на Проекти
+            Проекти
           </button>
           <button 
             onClick={() => { setActiveTab('testimonials'); setViewMode('list'); }}
             className={`px-6 py-3 rounded-lg font-bold transition-all ${activeTab === 'testimonials' ? 'bg-[#00f3ff] text-black' : 'bg-slate-800 text-gray-400 hover:text-white'}`}
           >
-            Управление на Отзиви
+            Отзиви
           </button>
         </div>
 
-        {/* === PROJECTS TAB === */}
         {activeTab === 'projects' && (
           <>
             {viewMode === 'list' && (
@@ -127,7 +154,7 @@ const Dashboard = () => {
             {viewMode === 'create' && (
               <div className="mb-12 bg-slate-800 rounded-xl p-8 border border-slate-700 relative">
                 <button onClick={() => setViewMode('list')} className="absolute top-4 right-4 text-gray-500 hover:text-white">✕</button>
-                <ProjectUploadForm onSuccess={() => { setViewMode('list'); fetchData(); }} />
+                <ProjectUploadForm onSuccess={() => { setViewMode('list'); fetchProjects(1); }} />
               </div>
             )}
 
@@ -135,37 +162,58 @@ const Dashboard = () => {
                <div className="mb-12">
                  <ProjectEditForm 
                    project={editingProject} 
-                   onSuccess={() => { setViewMode('list'); fetchData(); }}
+                   onSuccess={() => { setViewMode('list'); fetchProjects(projectPage); }}
                    onCancel={() => setViewMode('list')}
                  />
                </div>
             )}
 
             {viewMode === 'list' && (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {projects.map((post) => (
-                  <div key={post.id} className="bg-slate-800 rounded-lg overflow-hidden border border-slate-700">
-                    <div className="h-48 overflow-hidden"><img src={post.after_image_url} className="w-full h-full object-cover" /></div>
-                    <div className="p-4">
-                      <h3 className="font-bold text-white truncate">{post.car_model}</h3>
-                      <div className="mt-4 flex justify-end gap-2">
-                        <button onClick={() => startEdit(post)} className="text-[#00f3ff] text-sm font-bold border border-[#00f3ff]/30 px-3 py-1 rounded hover:bg-[#00f3ff]/20">РЕДАКТИРАЙ</button>
-                        <button onClick={() => handleDeleteProject(post.id)} className="text-red-400 text-sm font-bold border border-red-500/30 px-3 py-1 rounded hover:bg-red-500/20">ИЗТРИЙ</button>
+              <>
+                {loading ? <p className="text-center py-10 animate-pulse text-gray-500">Зареждане...</p> : (
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {projects.map((post) => (
+                      <div key={post.id} className="bg-slate-800 rounded-lg overflow-hidden border border-slate-700">
+                        <div className="h-48 overflow-hidden"><img src={post.after_image_url} className="w-full h-full object-cover" /></div>
+                        <div className="p-4">
+                          <h3 className="font-bold text-white truncate">{post.car_model}</h3>
+                          <div className="mt-4 flex justify-end gap-2">
+                            <button onClick={() => startEdit(post)} className="text-[#00f3ff] text-sm font-bold border border-[#00f3ff]/30 px-3 py-1 rounded hover:bg-[#00f3ff]/20">РЕДАКТИРАЙ</button>
+                            <button onClick={() => handleDeleteProject(post.id)} className="text-red-400 text-sm font-bold border border-red-500/30 px-3 py-1 rounded hover:bg-red-500/20">ИЗТРИЙ</button>
+                          </div>
+                        </div>
                       </div>
-                    </div>
+                    ))}
                   </div>
-                ))}
-              </div>
+                )}
+
+                <div className="flex justify-center items-center gap-4 mt-8">
+                    <button 
+                      onClick={() => setProjectPage(p => Math.max(1, p - 1))}
+                      disabled={projectPage === 1}
+                      className="p-2 bg-slate-800 rounded hover:bg-white/10 disabled:opacity-50"
+                    >
+                      <ChevronLeft />
+                    </button>
+                    <span className="text-gray-400">Страница {projectPage} от {projectTotalPages}</span>
+                    <button 
+                      onClick={() => setProjectPage(p => Math.min(projectTotalPages, p + 1))}
+                      disabled={projectPage === projectTotalPages}
+                      className="p-2 bg-slate-800 rounded hover:bg-white/10 disabled:opacity-50"
+                    >
+                      <ChevronRight />
+                    </button>
+                </div>
+              </>
             )}
           </>
         )}
 
-        {/* === TESTIMONIALS TAB === */}
         {activeTab === 'testimonials' && (
           <>
             {viewMode === 'list' && (
               <button 
-                onClick={() => setViewMode('create')}
+                onClick={() => setViewMode('create-testimonial')}
                 className="w-full mb-8 bg-slate-800 border-2 border-dashed border-slate-700 hover:border-purple-500 text-gray-400 hover:text-white py-6 rounded-xl transition-all flex flex-col items-center justify-center gap-2 group"
               >
                 <span className="text-3xl group-hover:scale-110 transition-transform text-purple-500">★</span>
@@ -173,27 +221,49 @@ const Dashboard = () => {
               </button>
             )}
 
-            {viewMode === 'create' && (
+            {viewMode === 'create-testimonial' && (
               <div className="mb-12 bg-slate-800 rounded-xl p-8 border border-slate-700 relative">
                 <button onClick={() => setViewMode('list')} className="absolute top-4 right-4 text-gray-500 hover:text-white">✕</button>
-                <TestimonialUpload onSuccess={() => { setViewMode('list'); fetchData(); }} />
+                <TestimonialUpload onSuccess={() => { setViewMode('list'); fetchTestimonials(1); }} />
               </div>
             )}
 
             {viewMode === 'list' && (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                {testimonials.map((t) => (
-                  <div key={t.id} className="bg-slate-800 rounded-lg overflow-hidden border border-slate-700">
-                    <div className="h-64 bg-black p-2">
-                        <img src={t.review_image_url} className="w-full h-full object-contain" />
-                    </div>
-                    <div className="p-4 flex justify-between items-center">
-                      <span className="text-sm font-bold text-gray-300">{t.client_name || 'Без име'}</span>
-                      <button onClick={() => handleDeleteTestimonial(t.id)} className="text-red-400 hover:text-white font-bold">✕ ИЗТРИЙ</button>
-                    </div>
+              <>
+                {loading ? <p className="text-center py-10 animate-pulse text-gray-500">Зареждане...</p> : (
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    {testimonials.map((t) => (
+                      <div key={t.id} className="bg-slate-800 rounded-lg overflow-hidden border border-slate-700">
+                        <div className="h-64 bg-black p-2">
+                            <img src={t.review_image_url} className="w-full h-full object-contain" />
+                        </div>
+                        <div className="p-4 flex justify-between items-center">
+                          <span className="text-sm font-bold text-gray-300">{t.client_name || 'Без име'}</span>
+                          <button onClick={() => handleDeleteTestimonial(t.id)} className="text-red-400 hover:text-white font-bold">✕ ИЗТРИЙ</button>
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                ))}
-              </div>
+                )}
+
+                <div className="flex justify-center items-center gap-4 mt-8">
+                    <button 
+                      onClick={() => setTestimonialPage(p => Math.max(1, p - 1))}
+                      disabled={testimonialPage === 1}
+                      className="p-2 bg-slate-800 rounded hover:bg-white/10 disabled:opacity-50"
+                    >
+                      <ChevronLeft />
+                    </button>
+                    <span className="text-gray-400">Страница {testimonialPage} от {testimonialTotalPages}</span>
+                    <button 
+                      onClick={() => setTestimonialPage(p => Math.min(testimonialTotalPages, p + 1))}
+                      disabled={testimonialPage === testimonialTotalPages}
+                      className="p-2 bg-slate-800 rounded hover:bg-white/10 disabled:opacity-50"
+                    >
+                      <ChevronRight />
+                    </button>
+                </div>
+              </>
             )}
           </>
         )}

@@ -8,7 +8,7 @@ const NAV_LINKS = [
   { name: 'Услуги',    path: '/#services', type: 'scroll', id: 'services' },
   { name: 'За Нас',    path: '/#about',    type: 'scroll', id: 'about' },
   { name: 'Галерия',   path: '/gallery',   type: 'route' },
-  { name: 'Отзиви',    path: '/reviews', type: 'route' },
+  { name: 'Отзиви',    path: '/testimonials', type: 'route' },
   { name: 'Контакти',  path: '/#contact',  type: 'scroll', id: 'contact' },
 ];
 
@@ -18,7 +18,7 @@ const Navbar = () => {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
 
-const handleLinkClick = (e: React.MouseEvent, link: typeof NAV_LINKS[0]) => {
+  const handleLinkClick = (e: React.MouseEvent, link: typeof NAV_LINKS[0]) => {
     if (link.type === 'route') {
       setIsOpen(false);
       return; 
@@ -36,7 +36,7 @@ const handleLinkClick = (e: React.MouseEvent, link: typeof NAV_LINKS[0]) => {
         return;
     }
 
-    const targetElement = document.getElementById(link.id ?? '');
+    const targetElement = document.getElementById(link.id || '');
 
     if (targetElement) {
       const headerOffset = 80;
@@ -49,7 +49,7 @@ const handleLinkClick = (e: React.MouseEvent, link: typeof NAV_LINKS[0]) => {
   };
 
   return (
-    <nav className="fixed top-0 w-full z-50 bg-black/80 backdrop-blur-xl border-b border-white/5 shadow-2xl">
+    <nav className="fixed top-0 w-full z-50 bg-black/90 backdrop-blur-md border-b border-white/10 shadow-lg">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           
@@ -57,43 +57,42 @@ const handleLinkClick = (e: React.MouseEvent, link: typeof NAV_LINKS[0]) => {
           <a 
             href="/" 
             onClick={(e) => handleLinkClick(e, NAV_LINKS[0])}
-            className="text-2xl font-black text-white tracking-wider hover:text-[#00f3ff] transition-colors flex items-center gap-2 z-50 relative group"
+            className="text-xl lg:text-2xl font-black text-white tracking-wider hover:text-[#00f3ff] transition-colors flex items-center gap-2 z-50 relative group whitespace-nowrap"
           >
-          VPRIME <span className="text-[#00f3ff] drop-shadow-[0_0_5px_rgba(0,243,255,0.8)]">LIGHTS</span>
+            <span className="group-hover:drop-shadow-[0_0_15px_rgba(0,243,255,0.8)] transition-all duration-300">
+              VPRIME <span className="text-[#00f3ff]">LIGHTS</span>
+            </span>
           </a>
 
           {/* DESKTOP MENU */}
-          <div className="hidden md:flex items-center gap-8">
+          <div className="hidden lg:flex items-center gap-4 xl:gap-8">
             
             {NAV_LINKS.map((link) => (
               <Link
                 key={link.name}
                 to={link.path}
                 onClick={(e) => link.type === 'scroll' ? handleLinkClick(e, link) : null}
-                className="relative text-sm font-bold text-gray-300 transition-colors uppercase tracking-wide group hover:text-white"
+                className="relative text-xs xl:text-sm font-bold text-gray-300 transition-colors uppercase tracking-wide group hover:text-white whitespace-nowrap"
               >
                 {link.name}
-                {/* Animated Underline */}
                 <span className="absolute left-0 bottom-[-4px] w-0 h-[2px] bg-[#00f3ff] transition-all duration-300 group-hover:w-full shadow-[0_0_10px_#00f3ff]"></span>
               </Link>
             ))}
             
-            {/* Admin & CTA Buttons */}
             {session && (
-              <Link to="/dashboard" className="text-sm text-[#00f3ff] font-bold border border-[#00f3ff]/30 px-4 py-2 rounded hover:bg-[#00f3ff] hover:text-black transition-all shadow-[0_0_10px_rgba(0,243,255,0.2)] hover:shadow-[0_0_20px_rgba(0,243,255,0.6)]">
+              <Link to="/dashboard" className="text-xs xl:text-sm text-[#00f3ff] font-bold border border-[#00f3ff]/30 px-3 py-2 rounded hover:bg-[#00f3ff] hover:text-black transition-all shadow-[0_0_10px_rgba(0,243,255,0.2)] hover:shadow-[0_0_20px_rgba(0,243,255,0.6)] whitespace-nowrap">
                 Админ
               </Link>
             )}
 
-            <a href="tel:+359888888888" className="bg-[#00f3ff] text-black text-sm font-extrabold px-5 py-2.5 rounded hover:bg-white transition-all shadow-[0_0_15px_rgba(0,243,255,0.5)] hover:shadow-[0_0_25px_rgba(255,255,255,0.8)] hover:scale-105 active:scale-95">
+            <a href="tel:+359888888888" className="bg-[#00f3ff] text-black text-xs xl:text-sm font-extrabold px-3 py-2 xl:px-5 xl:py-2.5 rounded hover:bg-white transition-all shadow-[0_0_15px_rgba(0,243,255,0.5)] hover:shadow-[0_0_25px_rgba(255,255,255,0.8)] hover:scale-105 active:scale-95 whitespace-nowrap">
               📞 088 888 8888
             </a>
           </div>
 
-          {/* MOBILE TOGGLE BUTTON */}
           <button 
             onClick={() => setIsOpen(!isOpen)} 
-            className="md:hidden text-white hover:text-[#00f3ff] transition-colors z-50 relative p-2"
+            className="lg:hidden text-white hover:text-[#00f3ff] transition-colors z-50 relative p-2"
           >
             {isOpen ? <X size={28} /> : <Menu size={28} />}
           </button>
@@ -103,7 +102,7 @@ const handleLinkClick = (e: React.MouseEvent, link: typeof NAV_LINKS[0]) => {
 
       {/* MOBILE MENU */}
       {isOpen && (
-        <div className="fixed inset-0 z-40 bg-black flex flex-col pt-32 px-6 md:hidden h-screen w-screen overflow-y-auto">
+        <div className="fixed inset-0 z-40 bg-black flex flex-col pt-32 px-6 lg:hidden h-screen w-screen overflow-y-auto">
             <div className="flex flex-col space-y-6">
               
               {NAV_LINKS.map((link) => (
