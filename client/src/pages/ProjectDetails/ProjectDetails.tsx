@@ -1,17 +1,19 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import api from '../../api/axios';
-import type { Project } from '../../types';
+import { type Project } from '../../types';
 import BeforeAfterSlider from '../../components/BeforeAfterSlider';
 import SEO from '../../components/SEO';
 import ContactSection from '../../components/ContactSection';
 import { X, ChevronLeft, ChevronRight, ZoomIn } from 'lucide-react';
 
+
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Pagination } from 'swiper/modules';
+import { Navigation, Pagination, Zoom } from 'swiper/modules'; 
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
+import 'swiper/css/zoom'; // <--- Added Zoom CSS
 
 const ProjectDetails = () => {
   const params = useParams();
@@ -23,10 +25,9 @@ const ProjectDetails = () => {
   // Lightbox State
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-
-  // Swipe State
-  const [touchStart, setTouchStart] = useState<number | null>(null);
-  const [touchEnd, setTouchEnd] = useState<number | null>(null);
+  
+  // Ref to control the Lightbox Swiper
+  const lightboxSwiperRef = useRef<any>(null);
 
   useEffect(() => {
     const fetchProject = async () => {
@@ -53,45 +54,6 @@ const ProjectDetails = () => {
     document.body.style.overflow = 'auto';
   };
 
-  const nextImage = (e?: React.SyntheticEvent) => {
-    if (e) e.stopPropagation();
-    if (!project?.extra_images) return;
-    setCurrentImageIndex((prev) => (prev + 1) % project.extra_images!.length);
-  };
-
-  const prevImage = (e?: React.SyntheticEvent) => {
-    if (e) e.stopPropagation();
-    if (!project?.extra_images) return;
-    setCurrentImageIndex((prev) => 
-      prev === 0 ? project.extra_images!.length - 1 : prev - 1
-    );
-  };
-
-  // --- SWIPE HANDLERS ---
-  const onTouchStart = (e: React.TouchEvent) => {
-    setTouchEnd(null); 
-    setTouchStart(e.targetTouches[0].clientX);
-  };
-
-  const onTouchMove = (e: React.TouchEvent) => {
-    setTouchEnd(e.targetTouches[0].clientX);
-  };
-
-  const onTouchEnd = () => {
-    if (!touchStart || !touchEnd) return;
-    
-    const distance = touchStart - touchEnd;
-    const minSwipeDistance = 50;
-
-    if (distance > minSwipeDistance) {
-      nextImage();
-    }
-
-    if (distance < -minSwipeDistance) {
-      prevImage();
-    }
-  };
-
   if (loading) return <div className="min-h-screen bg-slate-900 text-white flex items-center justify-center">Зареждане...</div>;
   if (!project) return <div className="min-h-screen bg-slate-900 text-white flex items-center justify-center">Проектът не е намерен.</div>;
 
@@ -107,6 +69,7 @@ const ProjectDetails = () => {
 
       <div className="pt-32 pb-20 px-6 max-w-7xl mx-auto">
         
+        {/* 1. Header Section */}
         <div className="text-center mb-12">
             <h1 className="text-4xl md:text-5xl font-bold text-white mb-4 uppercase">
             {project.car_model}
@@ -118,6 +81,7 @@ const ProjectDetails = () => {
             )}
         </div>
 
+        {/* 2. Main Slider Section */}
         <div className="max-w-5xl mx-auto px-4">
             <div className="rounded-2xl overflow-hidden shadow-[0_0_30px_rgba(0,0,0,0.5)] border border-slate-700">
             <BeforeAfterSlider 
@@ -134,6 +98,7 @@ const ProjectDetails = () => {
             </div>
         </div>
 
+        {/* 3. Extra Images Gallery */}
         {project.extra_images && project.extra_images.length > 0 && (
             <div className="max-w-7xl mx-auto mt-16 px-4">
             <h3 className="text-2xl font-bold text-white mb-8 border-l-4 border-[#00f3ff] pl-4 uppercase tracking-wider">
@@ -162,7 +127,6 @@ const ProjectDetails = () => {
                         <img 
                         src={imgUrl} 
                         alt={`Detail ${index}`} 
-                        loading="lazy"
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
                         />
                         <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity duration-300">
@@ -183,45 +147,67 @@ const ProjectDetails = () => {
 
       </div>
 
+      {/* Footer */}
       <ContactSection /> 
 
+      {/* --- FULLSCREEN LIGHTBOX (SWIPER ENABLED) --- */}
       {lightboxOpen && project.extra_images && (
-        <div 
-          className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-sm flex items-center justify-center animate-in fade-in duration-200"
-          onClick={closeLightbox}
-          onTouchStart={onTouchStart}
-          onTouchMove={onTouchMove}
-          onTouchEnd={onTouchEnd}
-        >
-          <button onClick={closeLightbox} className="absolute top-6 right-6 text-white/50 hover:text-white transition-colors p-2 hover:bg-white/10 rounded-full z-50">
+        <div className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-md animate-in fade-in duration-200">
+          
+          {/* Close Button */}
+          <button 
+            onClick={closeLightbox} 
+            className="absolute top-6 right-6 text-white/50 hover:text-white transition-colors p-2 hover:bg-white/10 rounded-full z-[110]"
+          >
             <X size={40} />
           </button>
 
+          {/* THE SWIPER LIGHTBOX */}
+          <Swiper
+            modules={[Navigation, Zoom]} // Enable Zoom module
+            zoom={true} // Activate it
+            initialSlide={currentImageIndex} // Open on the correct image
+            onSwiper={(swiper) => (lightboxSwiperRef.current = swiper)}
+            onSlideChange={(swiper) => setCurrentImageIndex(swiper.activeIndex)}
+            className="w-full h-full"
+            spaceBetween={50}
+            // Increase threshold to prevent accidental swipes when trying to zoom vertically
+            threshold={10} 
+          >
+            {project.extra_images.map((imgUrl, index) => (
+                <SwiperSlide key={index} className="flex items-center justify-center">
+                    {/* The zoom container wrapper */}
+                    <div className="swiper-zoom-container">
+                        <img 
+                            src={imgUrl} 
+                            alt={`Fullscreen View ${index}`} 
+                            className="max-h-[90vh] max-w-full object-contain"
+                        />
+                    </div>
+                </SwiperSlide>
+            ))}
+          </Swiper>
+
+          {/* Custom Navigation Buttons (Overlaying the Swiper) */}
           <button 
-            onClick={prevImage}
-            className="absolute left-4 md:left-8 text-white/50 hover:text-[#00f3ff] transition-colors p-2 hover:bg-black/50 rounded-full z-50 hidden md:block"
+            onClick={() => lightboxSwiperRef.current?.slidePrev()}
+            className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 text-white/50 hover:text-[#00f3ff] transition-colors p-2 hover:bg-black/50 rounded-full z-[110] hidden md:block"
           >
             <ChevronLeft size={50} />
           </button>
 
-          <div className="relative max-w-7xl max-h-[85vh] w-full px-4 flex justify-center">
-             <img 
-               src={project.extra_images[currentImageIndex]} 
-               alt="Fullscreen View" 
-               className="max-h-[85vh] max-w-full object-contain rounded-lg shadow-[0_0_50px_rgba(0,0,0,0.8)] border border-slate-800"
-               onClick={(e) => e.stopPropagation()} 
-             />
-             <div className="absolute -bottom-10 text-gray-400 font-mono text-sm">
-                {currentImageIndex + 1} / {project.extra_images.length}
-             </div>
-          </div>
-
           <button 
-            onClick={nextImage}
-            className="absolute right-4 md:right-8 text-white/50 hover:text-[#00f3ff] transition-colors p-2 hover:bg-black/50 rounded-full z-50 hidden md:block"
+            onClick={() => lightboxSwiperRef.current?.slideNext()}
+            className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 text-white/50 hover:text-[#00f3ff] transition-colors p-2 hover:bg-black/50 rounded-full z-[110] hidden md:block"
           >
             <ChevronRight size={50} />
           </button>
+
+          {/* Counter */}
+          <div className="absolute bottom-10 left-1/2 -translate-x-1/2 text-gray-400 font-mono text-sm z-[110]">
+             {currentImageIndex + 1} / {project.extra_images.length}
+          </div>
+
         </div>
       )}
 
