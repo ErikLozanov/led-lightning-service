@@ -9,7 +9,7 @@ interface SEOProps {
 
 const SEO = ({ 
   title, 
-  description = "Професионално реставриране и тунинг на фарове. Вижте пътя ясно отново с VPrime Lights.", 
+  description = "Професионално рециклиране и тунинг на фарове. Вижте пътя ясно отново с VPrime Lights.", 
   image = "/hero-mobile.mp4", 
 }: SEOProps): ReactNode => {
   

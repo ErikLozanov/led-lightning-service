@@ -161,7 +161,7 @@ const Home = () => {
              data-aos-delay="200"
              className="text-xl md:text-2xl text-gray-300 max-w-2xl mb-10 font-light leading-relaxed"
           >
-            Професионално реставриране и полиране на фарове. <br />
+            Професионално рециклиране и полиране на фарове. <br />
             <span className="text-white font-bold border-b-2 border-neon-blue pb-1">Виж пътя ясно отново.</span>
           </p>
           
