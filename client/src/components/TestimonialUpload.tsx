@@ -1,6 +1,7 @@
 import { useState, type ChangeEvent, type FormEvent } from 'react';
 import { supabase } from '../context/AuthContext';
 import api from '../api/axios';
+import toast from 'react-hot-toast';
 
 const TestimonialUpload = ({ onSuccess }: { onSuccess: () => void }) => {
   const [clientName, setClientName] = useState('');
@@ -9,7 +10,7 @@ const TestimonialUpload = ({ onSuccess }: { onSuccess: () => void }) => {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    if (!file) return alert("Моля изберете снимка (скрийншот).");
+    if (!file) return toast.success("Моля изберете снимка (скрийншот).");
 
     try {
       setUploading(true);
@@ -27,14 +28,14 @@ const TestimonialUpload = ({ onSuccess }: { onSuccess: () => void }) => {
         review_image_url: publicUrl
       });
 
-      alert("Отзивът е качен!");
+      toast.success("Отзивът е качен!");
       setClientName('');
       setFile(null);
       onSuccess();
 
     } catch (err) {
       console.error(err);
-      alert("Грешка при качване.");
+      toast.success("Грешка при качване.");
     } finally {
       setUploading(false);
     }

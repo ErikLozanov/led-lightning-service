@@ -2,6 +2,7 @@ import { useState, type ChangeEvent, type FormEvent } from 'react';
 import { supabase } from '../context/AuthContext';
 import api from '../api/axios';
 import type { Project } from '../types';
+import toast from 'react-hot-toast';
 
 interface ProjectEditFormProps {
   project: Project; 
@@ -14,10 +15,8 @@ const ProjectEditForm = ({ project, onSuccess, onCancel }: ProjectEditFormProps)
   const [description, setDescription] = useState(project.description);
   const [productionYear, setProductionYear] = useState(project.production_year || '');
   
-  // Existing Images (Strings/URLs)
   const [existingExtraImages, setExistingExtraImages] = useState<string[]>(project.extra_images || []);
   
-  // New Files to Upload
   const [newBeforeFile, setNewBeforeFile] = useState<File | null>(null);
   const [newAfterFile, setNewAfterFile] = useState<File | null>(null);
   const [newExtraFiles, setNewExtraFiles] = useState<File[]>([]);
@@ -47,22 +46,18 @@ const ProjectEditForm = ({ project, onSuccess, onCancel }: ProjectEditFormProps)
     setUploading(true);
 
     try {
-      // 1. Determine Main Images (Keep old URL if no new file selected)
       let beforeUrl = project.before_image_url;
       let afterUrl = project.after_image_url;
 
       if (newBeforeFile) beforeUrl = await uploadImage(newBeforeFile);
       if (newAfterFile) afterUrl = await uploadImage(newAfterFile);
 
-      // 2. Upload NEW Extra Images
       const newExtraUrls = await Promise.all(
         newExtraFiles.map(file => uploadImage(file))
       );
 
-      // 3. Combine Old (Kept) + New Extra Images
       const finalExtraImages = [...existingExtraImages, ...newExtraUrls];
 
-      // 4. Send Update to Backend
       await api.put(`/gallery/${project.id}`, {
         car_model: carModel,
         description,
@@ -72,12 +67,12 @@ const ProjectEditForm = ({ project, onSuccess, onCancel }: ProjectEditFormProps)
         extra_images: finalExtraImages
       });
 
-      alert("Промените са запазени!");
+      toast.success("Промените са запазени!");
       onSuccess();
 
     } catch (error) {
       console.error(error);
-      alert("Грешка при обновяване.");
+      toast.success("Грешка при обновяване.");
     } finally {
       setUploading(false);
     }

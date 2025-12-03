@@ -7,6 +7,7 @@ import TestimonialUpload from '../../components/TestimonialUpload';
 import api from '../../api/axios';
 import type { Project } from '../../types';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import toast from 'react-hot-toast';
 
 interface Testimonial {
   id: number;
@@ -94,7 +95,7 @@ const Dashboard = () => {
     try {
       await api.delete(`/gallery/${id}`);
       setProjects(projects.filter(p => p.id !== id));
-    } catch (err) { alert("Грешка при изтриване."); }
+    } catch (err) { toast.success("Грешка при изтриване."); }
   };
 
   const handleDeleteTestimonial = async (id: number) => {
@@ -102,7 +103,7 @@ const Dashboard = () => {
     try {
       await api.delete(`/testimonials/${id}`);
       setTestimonials(testimonials.filter(t => t.id !== id));
-    } catch (err) { alert("Грешка при изтриване."); }
+    } catch (err) { toast.success("Грешка при изтриване."); }
   };
 
   const startEdit = (project: Project) => {

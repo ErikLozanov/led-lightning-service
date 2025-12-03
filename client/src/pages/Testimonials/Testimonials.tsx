@@ -5,7 +5,7 @@ import SEO from '../../components/SEO';
 import ContactSection from '../../components/ContactSection';
 import { X, ChevronLeft, ChevronRight, Loader2, ChevronDown } from 'lucide-react';
 
-const TestimonialsPage = () => {
+const Testimonials = () => {
   // Use the Hook (replaces useEffect)
   const { 
     data, 
@@ -145,4 +145,4 @@ const TestimonialsPage = () => {
   );
 };
 
-export default TestimonialsPage;
+export default Testimonials;

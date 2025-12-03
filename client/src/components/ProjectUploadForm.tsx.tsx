@@ -1,6 +1,7 @@
 import { useState, type ChangeEvent, type FormEvent } from 'react';
 import { supabase } from '../context/AuthContext';
 import api from '../api/axios';
+import toast from 'react-hot-toast';
 
 interface ProjectUploadFormProps {
   onSuccess: () => void;
@@ -37,7 +38,7 @@ const ProjectUploadForm = ({ onSuccess }: ProjectUploadFormProps) => {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (!beforeFile || !afterFile || !carModel) {
-      alert("Моля попълнете задължителните полета (Модел, Описание, Преди/След).");
+      toast.success("Моля попълнете задължителните полета (Модел, Описание, Преди/След).");
       return;
     }
 
@@ -61,12 +62,12 @@ const ProjectUploadForm = ({ onSuccess }: ProjectUploadFormProps) => {
         extra_images: extraImageUrls
       });
 
-      alert("Проектът е добавен успешно!");
+      toast.success("Проектът е добавен успешно!");
       onSuccess();
 
     } catch (error) {
       console.error("Upload failed:", error);
-      alert("Грешка при качване.");
+      toast.success("Грешка при качване.");
     } finally {
       setUploading(false);
     }
