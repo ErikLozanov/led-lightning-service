@@ -41,32 +41,42 @@ const ServicesSection = () => {
 
       <div className="max-w-7xl mx-auto px-6">
         
+        <div data-aos="fade-up" className="text-center">
           <h2 className="text-4xl font-bold text-white mb-4 tracking-wider">
             НАШИТЕ <span className="text-[#00f3ff]">УСЛУГИ</span>
           </h2>
           <div className="h-1 w-24 bg-[#00f3ff] mx-auto shadow-[0_0_15px_#00f3ff]"></div>
-          <p className="text-gray-400 mt-6 max-w-2xl mx-auto text-lg">
+          
+          {/* FIX: Добавено mb-16 (повече разстояние) */}
+          <p className="text-gray-400 mt-6 max-w-2xl mx-auto text-lg text-center mb-16">
             Предлагаме пълна гама от професионални услуги за възстановяване и подобряване на автомобилните светлини.
           </p>
+        </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {services.map((service, index) => (
-                <div key={index} data-aos="fade-up" data-aos-delay={index * 100} className="group relative bg-slate-900/40 backdrop-blur-sm border border-slate-800 p-8 rounded-2xl hover:border-[#00f3ff]/50 transition-all duration-300 hover:transform hover:-translate-y-2 hover:shadow-[0_10px_30px_rgba(0,243,255,0.1)] h-full">
-                  <div className="bg-slate-800 w-16 h-16 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 border border-slate-700 group-hover:border-[#00f3ff] shadow-lg">
-                    {service.icon}
-                  </div>
+            <div 
+              key={index} 
+              data-aos="fade-up" 
+              data-aos-delay={index * 100} 
+              /* FIX: Променено duration-300 на duration-700 и добавено ease-out за плавност */
+              className="group relative bg-slate-900/40 backdrop-blur-sm border border-slate-800 p-8 rounded-2xl transition-all duration-700 ease-out hover:border-[#00f3ff]/50 hover:transform hover:-translate-y-2 hover:shadow-[0_10px_30px_rgba(0,243,255,0.1)] h-full"
+            >
+              <div className="bg-slate-800 w-16 h-16 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-700 border border-slate-700 group-hover:border-[#00f3ff] shadow-lg">
+                {service.icon}
+              </div>
 
-                  <h3 className="text-xl font-bold text-white mb-3 group-hover:text-[#00f3ff] transition-colors">
-                    {service.title}
-                  </h3>
-                  
-                  <p className="text-gray-400 leading-relaxed mb-6">
-                    {service.description}
-                  </p>
+              <h3 className="text-xl font-bold text-white mb-3 group-hover:text-[#00f3ff] transition-colors duration-500">
+                {service.title}
+              </h3>
+              
+              <p className="text-gray-400 leading-relaxed mb-6">
+                {service.description}
+              </p>
 
-                  <div className="absolute bottom-6 right-6 opacity-50 group-hover:opacity-100 transition-opacity">
-                  </div>
-                </div>
+              <div className="absolute bottom-6 right-6 opacity-50 group-hover:opacity-100 transition-opacity duration-500">
+              </div>
+            </div>
           ))}
         </div>
 

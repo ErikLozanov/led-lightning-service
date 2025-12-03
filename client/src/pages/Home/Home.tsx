@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import ServicesSection from '../../components/ServicesSection';
 import ContactSection from '../../components/ContactSection';
@@ -18,6 +18,9 @@ import 'swiper/css/pagination';
 const Home = () => {
   const { projects, loading } = useGallery();
   const location = useLocation();
+  
+  const desktopVideoRef = useRef<HTMLVideoElement>(null);
+  const mobileVideoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
     if (location.state && location.state.scrollTo) {
@@ -35,22 +38,35 @@ const Home = () => {
     }
   }, [location]);
 
-  // const scrollToContact = () => {
-  //   const contactSection = document.getElementById('contact');
-  //   if (contactSection) {
-  //     contactSection.scrollIntoView({ behavior: 'smooth' });
-  //   }
-  // };
+  useEffect(() => {
+    const playVideo = (videoRef: React.RefObject<HTMLVideoElement | null>) => {
+      if (videoRef.current) {
+        videoRef.current.play().catch(error => {
+          console.log("Autoplay prevented by browser:", error);
+        });
+      }
+    };
 
-  // const scrollToServices = () => {
-  //   const section = document.getElementById('services');
-  //   if (section) {
-  //     const headerOffset = 80;
-  //     const elementPosition = section.getBoundingClientRect().top;
-  //     const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-  //     window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
-  //   }
-  // };
+    playVideo(desktopVideoRef);
+    playVideo(mobileVideoRef);
+  }, []);
+
+  const scrollToContact = () => {
+    const contactSection = document.getElementById('contact');
+    if (contactSection) {
+      contactSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  const scrollToServices = () => {
+    const section = document.getElementById('services');
+    if (section) {
+      const headerOffset = 80;
+      const elementPosition = section.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+      window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+    }
+  };
 
   const handleSmoothLoop = (e: React.SyntheticEvent<HTMLVideoElement>) => {
     const video = e.currentTarget;
@@ -74,18 +90,37 @@ const Home = () => {
       
       {/* HERO SECTION */}
       <div className="relative min-h-screen flex flex-col items-center justify-center text-center p-6 overflow-hidden">
-        <video autoPlay loop muted playsInline onTimeUpdate={handleSmoothLoop} className="hidden md:block absolute top-0 left-0 w-full h-full object-cover z-0 transition-opacity duration-75">
+        
+        {/* Desktop Video with Ref */}
+        <video 
+          ref={desktopVideoRef}
+          autoPlay 
+          loop 
+          muted 
+          playsInline 
+          onTimeUpdate={handleSmoothLoop} 
+          className="hidden md:block absolute top-0 left-0 w-full h-full object-cover z-0 transition-opacity duration-75"
+        >
           <source src="/hero.mp4" type="video/mp4" />
         </video>
-        <video autoPlay loop muted playsInline onTimeUpdate={handleSmoothLoop} className="block md:hidden absolute top-0 left-0 w-full h-full object-cover z-0 transition-opacity duration-75">
+
+        {/* Mobile Video with Ref */}
+        <video 
+          ref={mobileVideoRef}
+          autoPlay 
+          loop 
+          muted 
+          playsInline 
+          onTimeUpdate={handleSmoothLoop} 
+          className="block md:hidden absolute top-0 left-0 w-full h-full object-cover z-0 transition-opacity duration-75"
+        >
           <source src="/hero-mobile.mp4" type="video/mp4" />
         </video>
 
         <div className="absolute inset-0 bg-black/70 z-10"></div>
         
-<div className="relative z-20 flex flex-col items-center max-w-4xl mx-auto mt-16">
+        <div className="relative z-20 flex flex-col items-center max-w-4xl mx-auto mt-16">
           
-          {/* Animate Title DOWN */}
           <h1 
              data-aos="fade-down" 
              data-aos-duration="1000" 
@@ -94,7 +129,6 @@ const Home = () => {
             VPRIME LIGHTS
           </h1>
           
-          {/* Animate Text UP with slight delay */}
           <p 
              data-aos="fade-up" 
              data-aos-delay="200"
@@ -104,9 +138,20 @@ const Home = () => {
             <span className="text-white font-bold border-b-2 border-neon-blue pb-1">Виж пътя ясно отново.</span>
           </p>
           
-          {/* Animate Buttons UP with more delay */}
           <div data-aos="fade-up" data-aos-delay="400" className="flex flex-col sm:flex-row gap-6">
-            {/* ... buttons ... */}
+            <button 
+              onClick={scrollToContact}
+              className="px-8 py-4 bg-[#00f3ff] text-black font-extrabold text-lg rounded-sm hover:bg-white hover:text-black transition-all duration-300 shadow-[0_0_20px_rgba(0,243,255,0.6)] hover:shadow-[0_0_30px_rgba(255,255,255,0.8)] uppercase tracking-wide hover:scale-105"
+            >
+              Запиши Час
+            </button>
+
+            <button 
+              onClick={scrollToServices}
+              className="px-8 py-4 border border-white/30 text-white font-bold text-lg rounded-sm backdrop-blur-sm uppercase tracking-wide transition-all duration-300 hover:bg-[#00f3ff] hover:text-black hover:border-[#00f3ff] hover:shadow-[0_0_20px_rgba(0,243,255,0.6)]"
+            >
+              Виж Услуги
+            </button>
           </div>
 
         </div>
@@ -126,16 +171,17 @@ const Home = () => {
       <div className="py-24 bg-gradient-to-b from-slate-900 to-black overflow-hidden relative">
         <div className="max-w-7xl mx-auto px-6"> 
           
-            <div className="flex flex-col items-center mb-12">
-              <h2 className="text-4xl font-bold tracking-wider text-center mb-4">
-                <span className="text-neon-blue">ПОСЛЕДНИ</span> ПРОЕКТИ
-              </h2>
-              <div className="h-1 w-24 bg-neon-blue shadow-[0_0_15px_#00f3ff]"></div>
-            </div>
+          <div data-aos="fade-up" className="flex flex-col items-center mb-12">
+            <h2 className="text-4xl font-bold tracking-wider text-center mb-4">
+              <span className="text-[#00f3ff]">ПОСЛЕДНИ</span> ПРОЕКТИ
+            </h2>
+            <div className="h-1 w-24 bg-[#00f3ff] shadow-[0_0_15px_#00f3ff]"></div>
+          </div>
 
           {loading && <p className="text-center text-gray-500 animate-pulse">Зареждане...</p>}
 
           {!loading && projects.length > 0 && (
+            <div data-aos="fade-up" data-aos-delay="200">
               <Swiper
                 modules={[Navigation, Pagination, Autoplay]}
                 spaceBetween={30}
@@ -159,17 +205,18 @@ const Home = () => {
                   </SwiperSlide>
                 ))}
               </Swiper>
+            </div>
           )}
 
-            <div className="mt-12 text-center">
-              <Link 
-                to="/gallery" 
-                className="inline-flex items-center gap-2 border border-white/30 px-8 py-3 rounded-full text-white font-bold transition-all duration-300 hover:bg-[#00f3ff] hover:text-black hover:border-[#00f3ff] hover:shadow-[0_0_20px_rgba(0,243,255,0.6)]"
-              >
-                ВИЖ ВСИЧКИ ПРОЕКТИ
-                <ChevronRight size={20} />
-              </Link>
-            </div>
+          <div data-aos="fade-up" data-aos-delay="300" className="mt-12 text-center">
+            <Link 
+              to="/gallery" 
+              className="inline-flex items-center gap-2 border border-white/30 px-8 py-3 rounded-full text-white font-bold transition-all duration-300 hover:bg-[#00f3ff] hover:text-black hover:border-[#00f3ff] hover:shadow-[0_0_20px_rgba(0,243,255,0.6)]"
+            >
+              ВИЖ ВСИЧКИ ПРОЕКТИ
+              <ChevronRight size={20} />
+            </Link>
+          </div>
 
         </div>
       </div>
