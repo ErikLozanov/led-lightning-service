@@ -10,13 +10,29 @@ const createSlug = (text) => {
     .replace(/\-\-+/g, '-'); 
 };
 
-const getAllProjects = async () => {
-  const { data, error } = await supabase
+const getAllProjects = async ({ page = 1, limit = 6, search = '', sort = 'desc' }) => {
+  const from = (page - 1) * limit;
+  const to = from + limit - 1;
+
+  let query = supabase
     .from('gallery_posts')
-    .select('*')
-    .order('created_at', { ascending: false });
+    .select('*', { count: 'exact' });
+
+  if (search) {
+    query = query.or(`car_model.ilike.%${search}%,description.ilike.%${search}%`);
+  }
+
+  const isAscending = sort === 'asc';
+  
+  query = query
+    .order('created_at', { ascending: isAscending })
+    .range(from, to);
+
+  const { data, error, count } = await query;
+
   if (error) throw new Error(error.message);
-  return data;
+
+  return { data, total: count };
 };
 
 const getProjectBySlug = async (slug) => {

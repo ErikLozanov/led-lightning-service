@@ -2,8 +2,20 @@ const galleryService = require('../services/galleryService');
 
 const getGallery = async (req, res) => {
   try {
-    const projects = await galleryService.getAllProjects();
-    res.json(projects);
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 6;
+    const search = req.query.search || '';
+    
+    const sort = req.query.sort || 'desc';
+
+    const result = await galleryService.getAllProjects({ page, limit, search, sort });
+    
+    res.json({
+      projects: result.data,
+      total: result.total,
+      page,
+      totalPages: Math.ceil(result.total / limit)
+    });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
