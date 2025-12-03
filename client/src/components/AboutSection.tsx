@@ -12,7 +12,7 @@ const AboutSection = () => {
         
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           
-          {/* LEFT: Text Content (Fades in from Right) */}
+          {/* LEFT: Text Content */}
           <div data-aos="fade-right">
             <div>
               <div className="flex items-center gap-4 mb-6">
@@ -47,19 +47,28 @@ const AboutSection = () => {
             </div>
           </div>
 
-          {/* RIGHT: Visuals (Fades in from Left) */}
           <div data-aos="fade-left" data-aos-delay="200" className="relative">
-             {/* Main Image */}
-             <div className="rounded-2xl overflow-hidden border border-slate-700 shadow-2xl relative z-10">
-                <img 
-                  src="https://images.unsplash.com/photo-1487754180451-c456f719a1fc?q=80&w=1000&auto=format&fit=crop" 
-                  alt="Workshop" 
-                  className="w-full h-auto object-cover hover:scale-105 transition-transform duration-700"
-                />
+             
+             {/* 1. Main Video Container */}
+             <div className="rounded-2xl overflow-hidden border border-slate-700 shadow-2xl relative z-10 h-[500px] group">
+                
+                {/* 2. The Video */}
+                <video 
+                  autoPlay 
+                  loop 
+                  muted 
+                  playsInline 
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                >
+                  <source src="/about-us.mp4" type="video/mp4" />
+                  
+                </video>
+
+                <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-500"></div>
              </div>
              
              {/* Floating Badge (Experience) */}
-             <div className="absolute -bottom-10 -left-10 z-20 bg-black/80 backdrop-blur-md border border-slate-700 p-6 rounded-xl shadow-[0_0_30px_rgba(0,0,0,0.5)] hidden md:block">
+             {/* <div className="absolute -bottom-10 -left-10 z-20 bg-black/80 backdrop-blur-md border border-slate-700 p-6 rounded-xl shadow-[0_0_30px_rgba(0,0,0,0.5)] hidden md:block">
                 <div className="flex items-center gap-4">
                     <div className="bg-[#00f3ff] text-black p-3 rounded-full">
                         <Award size={32} />
@@ -69,12 +78,12 @@ const AboutSection = () => {
                         <p className="text-xs text-gray-400 uppercase tracking-wide">Години Опит</p>
                     </div>
                 </div>
-             </div>
+             </div> */}
           </div>
 
         </div>
 
-        {/* BOTTOM: Stats Row (Staggered Pop Up) */}
+        {/* BOTTOM: Stats Row */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-24">
             {[
               { icon: Wrench, num: "1200+", text: "Реставрирани Фара" },
