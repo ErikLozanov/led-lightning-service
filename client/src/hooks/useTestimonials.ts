@@ -1,26 +1,26 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
 import api from '../api/axios';
-import type { Project } from '../types';
 
-interface GalleryResponse {
-  projects: Project[];
+interface Testimonial {
+  id: number;
+  client_name?: string;
+  car_model?: string;
+  review_image_url: string;
+}
+
+interface TestimonialResponse {
+  testimonials: Testimonial[];
   total: number;
   page: number;
   totalPages: number;
 }
 
-export const useGallery = (search: string = '', sort: 'asc' | 'desc' = 'desc') => {
+export const useTestimonials = () => {
   return useInfiniteQuery({
-    queryKey: ['gallery', search, sort], 
-    
+    queryKey: ['testimonials'],
     queryFn: async ({ pageParam = 1 }) => {
-      const res = await api.get<GalleryResponse>('/gallery', {
-        params: { 
-          page: pageParam, 
-          limit: 6, 
-          search,
-          sort,
-        }
+      const res = await api.get<TestimonialResponse>('/testimonials', {
+        params: { page: pageParam, limit: 6 } 
       });
       return res.data;
     },
@@ -31,6 +31,6 @@ export const useGallery = (search: string = '', sort: 'asc' | 'desc' = 'desc') =
       }
       return undefined;
     },
-    staleTime: 1000 * 60 * 5, 
+    staleTime: 1000 * 60 * 10, 
   });
 };

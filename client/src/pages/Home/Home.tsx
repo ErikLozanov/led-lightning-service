@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import ServicesSection from '../../components/ServicesSection';
 import ContactSection from '../../components/ContactSection';
@@ -7,7 +7,7 @@ import AboutSection from '../../components/AboutSection';
 import ProjectCard from '../../components/ProjectCard';
 import SEO from '../../components/SEO';
 import { useGallery } from '../../hooks/useGallery';
-import { ChevronRight } from 'lucide-react';
+import { ChevronRight, Play } from 'lucide-react';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Autoplay } from 'swiper/modules';
@@ -16,11 +16,14 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 
 const Home = () => {
-  const { projects, loading } = useGallery();
-  const location = useLocation();
+  const { data, isLoading: loading, isError: error } = useGallery();
   
+  const projects = data?.pages[0]?.projects || [];
+
+  const location = useLocation();
   const desktopVideoRef = useRef<HTMLVideoElement>(null);
   const mobileVideoRef = useRef<HTMLVideoElement>(null);
+  const [showPlayButton, setShowPlayButton] = useState(false);
 
   useEffect(() => {
     if (location.state && location.state.scrollTo) {
@@ -39,17 +42,32 @@ const Home = () => {
   }, [location]);
 
   useEffect(() => {
-    const playVideo = (videoRef: React.RefObject<HTMLVideoElement | null>) => {
-      if (videoRef.current) {
-        videoRef.current.play().catch(error => {
-          console.log("Autoplay prevented by browser:", error);
-        });
+    const attemptPlay = async (videoRef: React.RefObject<HTMLVideoElement | null>) => {
+      const video = videoRef.current;
+      if (!video) return;
+
+      video.muted = true;
+      video.defaultMuted = true;
+      video.playsInline = true;
+
+      try {
+        await video.play();
+        setShowPlayButton(false);
+      } catch (err) {
+        console.log("Autoplay blocked by browser:", err);
+        setShowPlayButton(true);
       }
     };
 
-    playVideo(desktopVideoRef);
-    playVideo(mobileVideoRef);
+    attemptPlay(desktopVideoRef);
+    attemptPlay(mobileVideoRef);
   }, []);
+
+  const handleManualPlay = () => {
+    if (desktopVideoRef.current) desktopVideoRef.current.play();
+    if (mobileVideoRef.current) mobileVideoRef.current.play();
+    setShowPlayButton(false);
+  };
 
   const scrollToContact = () => {
     const contactSection = document.getElementById('contact');
@@ -70,6 +88,8 @@ const Home = () => {
 
   const handleSmoothLoop = (e: React.SyntheticEvent<HTMLVideoElement>) => {
     const video = e.currentTarget;
+    if (video.paused) return;
+    
     const timeLeft = video.duration - video.currentTime;
     const fadeDuration = 1.5;
 
@@ -90,27 +110,24 @@ const Home = () => {
       
       {/* HERO SECTION */}
       <div className="relative min-h-screen flex flex-col items-center justify-center text-center p-6 overflow-hidden">
-        
-        {/* Desktop Video with Ref */}
         <video 
           ref={desktopVideoRef}
-          autoPlay 
           loop 
           muted 
           playsInline 
+          autoPlay
           onTimeUpdate={handleSmoothLoop} 
           className="hidden md:block absolute top-0 left-0 w-full h-full object-cover z-0 transition-opacity duration-75"
         >
           <source src="/hero.mp4" type="video/mp4" />
         </video>
 
-        {/* Mobile Video with Ref */}
         <video 
           ref={mobileVideoRef}
-          autoPlay 
           loop 
           muted 
-          playsInline 
+          playsInline
+          autoPlay
           onTimeUpdate={handleSmoothLoop} 
           className="block md:hidden absolute top-0 left-0 w-full h-full object-cover z-0 transition-opacity duration-75"
         >
@@ -118,9 +135,19 @@ const Home = () => {
         </video>
 
         <div className="absolute inset-0 bg-black/70 z-10"></div>
+
+        {showPlayButton && (
+           <div className="absolute inset-0 z-20 flex items-center justify-center pointer-events-none">
+              <button 
+                onClick={handleManualPlay}
+                className="pointer-events-auto bg-white/10 backdrop-blur-md border border-white/30 rounded-full p-6 text-white hover:bg-[#00f3ff] hover:text-black transition-all animate-pulse"
+              >
+                 <Play size={48} fill="currentColor" />
+              </button>
+           </div>
+        )}
         
         <div className="relative z-20 flex flex-col items-center max-w-4xl mx-auto mt-16">
-          
           <h1 
              data-aos="fade-down" 
              data-aos-duration="1000" 
@@ -153,7 +180,6 @@ const Home = () => {
               Виж Услуги
             </button>
           </div>
-
         </div>
 
         <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-20 animate-bounce text-gray-400">
@@ -161,10 +187,7 @@ const Home = () => {
         </div>
       </div>
 
-      {/* SERVICES */}
       <ServicesSection />
-
-      {/* ABOUT US */}
       <AboutSection />
 
       {/* GALLERY CAROUSEL */}
@@ -178,6 +201,7 @@ const Home = () => {
             <div className="h-1 w-24 bg-[#00f3ff] shadow-[0_0_15px_#00f3ff]"></div>
           </div>
 
+          {error && <div className="text-center text-red-400">Възникна грешка при зареждането.</div>}
           {loading && <p className="text-center text-gray-500 animate-pulse">Зареждане...</p>}
 
           {!loading && projects.length > 0 && (
@@ -221,10 +245,7 @@ const Home = () => {
         </div>
       </div>
 
-      {/* TESTIMONIALS */}
       <TestimonialsSection />
-
-      {/* CONTACT */}
       <ContactSection /> 
     </div>
   );
