@@ -17,10 +17,16 @@ app.use('/api', apiRoutes);
 
 // Health Check
 app.get('/', (req, res) => {
-  res.json({ message: 'LED Lightning Service Backend is running!' });
+  res.json({ message: 'VPrime Backend is running on Vercel!' });
 });
 
-// Start Server
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+
+if (process.env.NODE_ENV !== 'production') {
+  const PORT = process.env.PORT || 5000;
+  app.listen(PORT, () => {
+    console.log(`Server running locally on port ${PORT}`);
+  });
+}
+
+// For Vercel (Export the app)
+module.exports = app;
