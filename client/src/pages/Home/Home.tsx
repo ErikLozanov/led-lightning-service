@@ -18,7 +18,11 @@ import 'swiper/css/pagination';
 const Home = () => {
   const { data, isLoading: loading, isError: error } = useGallery();
   
-  const projects = data?.pages[0]?.projects || [];
+  const projects = data?.pages.flatMap((page: any) => {
+      if (page?.projects) return page.projects;
+      if (Array.isArray(page)) return page;
+      return [];
+  }) || [];
 
   const location = useLocation();
   const desktopVideoRef = useRef<HTMLVideoElement>(null);
