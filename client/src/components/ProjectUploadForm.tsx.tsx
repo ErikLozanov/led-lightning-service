@@ -4,6 +4,7 @@ import api from '../api/axios';
 import { compressImage } from '../utils/compress';
 import toast from 'react-hot-toast';
 import { ArrowLeft, ArrowRight, Trash2 } from 'lucide-react';
+import { addWatermark } from '../utils/watermark';
 
 interface ProjectUploadFormProps {
   onSuccess: () => void;
@@ -28,15 +29,21 @@ const ProjectUploadForm = ({ onSuccess }: ProjectUploadFormProps) => {
   
   const [uploading, setUploading] = useState(false);
 
-  const uploadImage = async (file: File) => {
-    const compressedFile = await compressImage(file);
+const uploadImage = async (file: File) => {
+    // 1. Add Watermark FIRST
+    const watermarkedFile = await addWatermark(file);
+    
+    // 2. Then Compress
+    const compressedFile = await compressImage(watermarkedFile);
+    
+    // 3. Then Upload
     const fileName = `${Date.now()}-${file.name.replace(/\.[^/.]+$/, "")}.webp`; 
     const { error } = await supabase.storage.from('images').upload(fileName, compressedFile);
+    
     if (error) throw error;
     const { data: { publicUrl } } = supabase.storage.from('images').getPublicUrl(fileName);
     return publicUrl;
   };
-
   // --- GALLERY LOGIC (Reordering & Previews) ---
 
   const handleExtraFilesChange = (e: ChangeEvent<HTMLInputElement>) => {
