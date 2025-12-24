@@ -22,7 +22,7 @@ const ContactSection = () => {
                     </p>
                     <div className="flex gap-4">
                         <a
-                            href="https://www.facebook.com/profile.php?id=61555367484659"
+                            href="https://www.facebook.com/profile.php?id=61585466737646"
                             target="_blank"
                             rel="noopener noreferrer"
                             className="w-10 h-10 bg-slate-800 rounded-full flex items-center justify-center text-white hover:bg-neon-blue hover:text-black transition-all"
