@@ -86,7 +86,7 @@ const AboutSection = () => {
         {/* BOTTOM: Stats Row */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-24">
             {[
-              { icon: Wrench, num: "1200+", text: "Реставрирани Фара" },
+              { icon: Wrench, num: "1200+", text: "Рециклирани Фара" },
               { icon: Users, num: "850+", text: "Доволни Клиенти" },
               { icon: Award, num: "100%", text: "Гаранция за Качество" }
             ].map((stat, i) => (

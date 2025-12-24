@@ -63,7 +63,7 @@ const ProjectDetails = () => {
       
       <SEO 
         title={project.car_model} 
-        description={`Вижте резултата от реставрацията на ${project.car_model}.`}
+        description={`Вижте как преобразихме фаровете на ${project.car_model}.`}
         image={project.after_image_url}
         type="article"
       />
@@ -100,7 +100,7 @@ const ProjectDetails = () => {
                 <GalleryActions 
             postId={project.id.toString()} 
             initialLikes={project.likes || 0} 
-            title={`Реставрация: ${project.car_model}`}
+            title={`Преобразяване на фарове: ${project.car_model}`}
                 />
             </div>
         </div>
