@@ -1,4 +1,5 @@
 export interface Project {
+  likes: number;
   id: number;
   car_model: string;
   description: string;
