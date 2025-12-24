@@ -1,4 +1,8 @@
 User-agent: *
 Allow: /
 
+# Block admin routes from showing in Google Search
+Disallow: /admin
+
+# Point to your sitemap (Update domain when you buy it)
 Sitemap: https://vprimelights.com/sitemap.xml
