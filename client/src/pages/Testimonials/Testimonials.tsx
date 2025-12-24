@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useTestimonials } from '../../hooks/useTestimonials'; // <--- Import Hook
 import TestimonialCard from '../../components/TestimonialCard';
-import SEO from '../../components/SEO';
+import { SEO } from '../../components/SEO';
 import ContactSection from '../../components/ContactSection';
 import { X, ChevronLeft, ChevronRight, Loader2, ChevronDown } from 'lucide-react';
 

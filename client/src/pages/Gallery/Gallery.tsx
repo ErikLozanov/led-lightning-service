@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useGallery } from '../../hooks/useGallery';
 import ProjectCard from '../../components/ProjectCard';
-import SEO from '../../components/SEO';
+import { SEO } from '../../components/SEO';
 import ContactSection from '../../components/ContactSection';
 import { Search, ChevronDown, Loader2, ArrowUpDown } from 'lucide-react';
 

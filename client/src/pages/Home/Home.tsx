@@ -5,7 +5,7 @@ import ContactSection from '../../components/ContactSection';
 import TestimonialsSection from '../../components/TestimonialsSection';
 import AboutSection from '../../components/AboutSection';
 import ProjectCard from '../../components/ProjectCard';
-import SEO from '../../components/SEO';
+import { SEO } from '../../components/SEO';
 import { useGallery } from '../../hooks/useGallery';
 import { ChevronRight, Play } from 'lucide-react';
 
@@ -110,7 +110,7 @@ const Home = () => {
 
   return (
     <div className="min-h-screen bg-slate-900 text-white font-sans selection:bg-neon-blue selection:text-black">
-      <SEO title="Начало" />
+      <SEO title="Начало" description="Професионално изпълнение с внимание към детайла. Разгледайте нашите завършени проекти и се уверете в качеството на услугите ни." />
       
       {/* HERO SECTION */}
       <div className="relative min-h-screen flex flex-col items-center justify-center text-center p-6 overflow-hidden">

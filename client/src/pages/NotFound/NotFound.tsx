@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Home, LightbulbOff } from 'lucide-react';
-import SEO from '../../components/SEO';
+import { SEO } from '../../components/SEO';
 
 const NotFound = () => {
   return (

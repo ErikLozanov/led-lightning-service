@@ -1,38 +1,39 @@
-
+import { Helmet } from 'react-helmet-async';
 
 interface SEOProps {
   title: string;
   description?: string;
-  image?: string;
-  type?: string;
+  image?: string; // Optional: URL to an image for social media previews
+  url?: string;   // Optional: Canonical URL for this page
+  type?: string;  // Optional: 'website' or 'article'
 }
 
-const SEO = ({ 
+export const SEO = ({ 
   title, 
-  description = "Професионално реставриране и тунинг на фарове. Вижте пътя ясно отново с VPrime Lights.", 
-  image = "/social-image.jpg", 
-  type = "website" 
+  description = "Професионални услуги за вашия дом и бизнес.", // Default description if none provided
+  image, 
+  url,
+  type = 'website' 
 }: SEOProps) => {
   
-  const siteTitle = "VPrime Lights";
-  const fullTitle = `${title} | ${siteTitle}`;
-  const siteUrl = "https://vprimelights.com"; 
-
-  const fullImage = image.startsWith('http') ? image : `${siteUrl}${image}`;
-
   return (
-    <>
-      <title>{fullTitle}</title>
+    <Helmet>
+      {/* Standard Metadata */}
+      <title>{title}</title>
       <meta name="description" content={description} />
-      <link rel="canonical" href={siteUrl + window.location.pathname} /> 
       
-      <meta property="og:title" content={fullTitle} />
-      <meta property="og:description" content={description} />
-      <meta property="og:image" content={fullImage} />
+      {/* Open Graph / Facebook */}
       <meta property="og:type" content={type} />
-      <meta property="og:url" content={siteUrl + window.location.pathname} />
-    </>
+      <meta property="og:title" content={title} />
+      <meta property="og:description" content={description} />
+      {image && <meta property="og:image" content={image} />}
+      {url && <meta property="og:url" content={url} />}
+
+      {/* Twitter Card */}
+      <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:title" content={title} />
+      <meta name="twitter:description" content={description} />
+      {image && <meta name="twitter:image" content={image} />}
+    </Helmet>
   );
 };
-
-export default SEO;

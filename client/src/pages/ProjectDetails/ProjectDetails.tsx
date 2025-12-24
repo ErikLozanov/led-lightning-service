@@ -3,7 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import api from '../../api/axios';
 import { type Project } from '../../types';
 import BeforeAfterSlider from '../../components/BeforeAfterSlider';
-import SEO from '../../components/SEO';
+import { SEO } from '../../components/SEO';
 import ContactSection from '../../components/ContactSection';
 import { X, ChevronLeft, ChevronRight, ZoomIn } from 'lucide-react';
 
