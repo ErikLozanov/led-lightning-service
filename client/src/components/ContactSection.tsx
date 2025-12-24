@@ -115,10 +115,10 @@ const ContactSection = () => {
                 {/* Column 4: Map (Placeholder) */}
                 <div className="bg-slate-800 rounded-xl overflow-hidden h-64 border border-slate-700 relative group">
                     <iframe
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1234.753288983724!2d23.108484770449515!3d42.60294575264235!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14aacdbc82db821f%3A0xe23600b5c6f22dd9!2sVPrime%20Lights!5e0!3m2!1sbg!2sbg!4v1766572753010!5m2!1sbg!2sbg"
-                        width="600"
-                        height="450"
-                        style={{ border: 0 }}
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d519.1500961021653!2d23.109270810135737!3d42.602911083734874!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14aacdbc82db821f%3A0xe23600b5c6f22dd9!2sVPrime%20Lights!5e0!3m2!1sbg!2sbg!4v1766573353954!5m2!1sbg!2sbg"
+                        width={600}
+                        height={450}
+                        style={{ border: "0" }}
                         allowFullScreen
                         loading="lazy"
                         referrerPolicy="no-referrer-when-downgrade"
