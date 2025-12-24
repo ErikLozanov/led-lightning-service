@@ -14,6 +14,7 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/zoom'; // <--- Added Zoom CSS
+import { GalleryActions } from '../../components/GalleryActions';
 
 const ProjectDetails = () => {
   const params = useParams();
@@ -95,6 +96,12 @@ const ProjectDetails = () => {
                 <p className="text-gray-300 leading-relaxed whitespace-pre-wrap">
                     {project.description}
                 </p>
+
+                <GalleryActions 
+            postId={project.id.toString()} 
+            initialLikes={project.likes || 0} 
+            title={`Реставрация: ${project.car_model}`}
+                />
             </div>
         </div>
 
