@@ -1,10 +1,8 @@
 import { useState, type ChangeEvent, type FormEvent } from 'react';
-import { supabase } from '../context/AuthContext';
 import api from '../api/axios';
-import { compressImage } from '../utils/compress';
+import { processAndUpload } from '../utils/upload';
 import toast from 'react-hot-toast';
 import { ArrowLeft, ArrowRight, Trash2 } from 'lucide-react';
-import { addWatermark } from '../utils/watermark';
 
 interface ProjectUploadFormProps {
   onSuccess: () => void;
@@ -20,31 +18,12 @@ const ProjectUploadForm = ({ onSuccess }: ProjectUploadFormProps) => {
   const [description, setDescription] = useState('');
   const [productionYear, setProductionYear] = useState('');
   
-  // Main images state
   const [beforeFile, setBeforeFile] = useState<File | null>(null);
   const [afterFile, setAfterFile] = useState<File | null>(null);
   
-  // Extra images state 
   const [extraImages, setExtraImages] = useState<ExtraImageItem[]>([]);
   
   const [uploading, setUploading] = useState(false);
-
-const uploadImage = async (file: File) => {
-    // 1. Add Watermark FIRST
-    const watermarkedFile = await addWatermark(file);
-    
-    // 2. Then Compress
-    const compressedFile = await compressImage(watermarkedFile);
-    
-    // 3. Then Upload
-    const fileName = `${Date.now()}-${file.name.replace(/\.[^/.]+$/, "")}.webp`; 
-    const { error } = await supabase.storage.from('images').upload(fileName, compressedFile);
-    
-    if (error) throw error;
-    const { data: { publicUrl } } = supabase.storage.from('images').getPublicUrl(fileName);
-    return publicUrl;
-  };
-  // --- GALLERY LOGIC (Reordering & Previews) ---
 
   const handleExtraFilesChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -73,8 +52,6 @@ const uploadImage = async (file: File) => {
     });
   };
 
-  // --- SUBMIT ---
-
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (!beforeFile || !afterFile || !carModel) {
@@ -84,18 +61,15 @@ const uploadImage = async (file: File) => {
 
     try {
       setUploading(true);
-      toast.loading("Обработване и компресиране...", { id: 'upload' });
+      toast.loading("Обработване и качване...", { id: 'upload' });
 
-      // 1. Upload Main Images
-      const beforeUrl = await uploadImage(beforeFile);
-      const afterUrl = await uploadImage(afterFile);
+      const beforeUrl = await processAndUpload(beforeFile);
+      const afterUrl = await processAndUpload(afterFile);
 
-      // 2. Upload Extra Images (In the specific order defined by user)
       const extraImageUrls = await Promise.all(
-        extraImages.map(item => uploadImage(item.file))
+        extraImages.map(item => processAndUpload(item.file))
       );
 
-      // 3. Save to DB
       await api.post('/gallery', {
         car_model: carModel,
         description,
@@ -107,7 +81,6 @@ const uploadImage = async (file: File) => {
 
       toast.success("Проектът е качен успешно!", { id: 'upload' });
       
-      // Reset Form
       setCarModel('');
       setDescription('');
       setProductionYear('');
@@ -144,7 +117,6 @@ const uploadImage = async (file: File) => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
-            {/* BEFORE IMAGE */}
             <div className="bg-slate-800 p-4 rounded border border-slate-600">
                 <label className="block text-sm text-red-400 font-bold mb-2">📸 СНИМКА ПРЕДИ *</label>
                 {beforeFile && (
@@ -161,7 +133,6 @@ const uploadImage = async (file: File) => {
                 />
             </div>
 
-            {/* AFTER IMAGE */}
             <div className="bg-slate-800 p-4 rounded border border-slate-600">
                 <label className="block text-sm text-neon-blue font-bold mb-2">✨ СНИМКА СЛЕД *</label>
                 {afterFile && (
@@ -179,7 +150,6 @@ const uploadImage = async (file: File) => {
             </div>
         </div>
 
-        {/* --- GALLERY MANAGER (REORDERABLE) --- */}
         <div className="bg-slate-800 p-4 rounded border border-slate-600 mt-4">
             <label className="block text-sm text-white font-bold mb-4">ДОПЪЛНИТЕЛНИ СНИМКИ (Опция)</label>
             
@@ -199,7 +169,6 @@ const uploadImage = async (file: File) => {
                          <img src={item.preview} className="w-full h-full object-cover" />
                       </div>
                       
-                      {/* Overlay Controls */}
                       <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
                          {/* Move Left */}
                          <button 
